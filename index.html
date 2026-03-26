@@ -1932,35 +1932,94 @@ footer .heart { color: var(--rose); }
 }
 
 /* ===== DONUT CHART ===== */
-.donut-container {
+.perf-bars {
   display: flex;
-  justify-content: center;
-  gap: 3rem;
-  flex-wrap: wrap;
-  margin: 2rem 0;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin: 2.5rem 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.donut-item {
-  text-align: center;
+.perf-bar-item {
+  position: relative;
 }
 
-.donut-item svg {
-  width: 160px;
-  height: 160px;
+.perf-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.6rem;
 }
 
-.donut-label {
+.perf-bar-label {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.9rem;
-  margin-top: 0.75rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.perf-bar-values {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
   color: var(--text-secondary);
 }
 
-.donut-value {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
+.perf-bar-values .before-val {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.perf-bar-values .after-val {
+  font-weight: 700;
+  margin-left: 0.5rem;
+}
+
+.perf-bar-track {
+  position: relative;
+  height: 36px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.perf-bar-before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 10px;
+  opacity: 0.15;
+}
+
+.perf-bar-after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 10px;
+  width: 0;
+}
+
+.perf-bar-badge {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
   font-weight: 800;
+  padding: 0.2rem 0.7rem;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.5);
+  white-space: nowrap;
+  opacity: 0;
+}
+
+@media (max-width: 768px) {
+  .perf-bars { gap: 2rem; }
+  .perf-bar-track { height: 30px; }
 }
 
 /* ===== SPARKLE ANIMATION ===== */
@@ -2312,50 +2371,50 @@ footer .heart { color: var(--rose); }
       <p class="section-subtitle">Numbers that speak louder than words.</p>
     </div>
 
-    <div class="donut-container" id="donutContainer">
-      <div class="donut-item">
-        <svg viewBox="0 0 150 150">
-          <circle cx="75" cy="75" r="60" fill="none" stroke="rgba(124,58,237,0.15)" stroke-width="10"/>
-          <circle class="donut-ring" cx="75" cy="75" r="60" fill="none" stroke="var(--purple)" stroke-width="10"
-            stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"
-            transform="rotate(-90 75 75)" data-target="373" data-circumference="377"/>
-          <text x="75" y="70" text-anchor="middle" fill="var(--purple-light)" font-family="Space Grotesk" font-size="17" font-weight="800">16s →</text>
-          <text x="75" y="92" text-anchor="middle" fill="var(--text-primary)" font-family="Space Grotesk" font-size="20" font-weight="800">100ms</text>
-        </svg>
-        <div class="donut-label">API Response Time</div>
+    <div class="perf-bars" id="perfBars">
+      <div class="perf-bar-item" data-before="100" data-after="0.6" data-color="var(--purple)">
+        <div class="perf-bar-header">
+          <span class="perf-bar-label">API Response Time</span>
+          <span class="perf-bar-values"><span class="before-val">16s</span><span class="after-val" style="color: var(--purple-light);">→ 100ms</span></span>
+        </div>
+        <div class="perf-bar-track">
+          <div class="perf-bar-before" style="width: 100%; background: var(--purple);"></div>
+          <div class="perf-bar-after" style="background: linear-gradient(90deg, var(--purple), var(--purple-light));"></div>
+          <div class="perf-bar-badge" style="color: var(--purple-light);">99.4% faster</div>
+        </div>
       </div>
-      <div class="donut-item">
-        <svg viewBox="0 0 150 150">
-          <circle cx="75" cy="75" r="60" fill="none" stroke="rgba(6,182,212,0.15)" stroke-width="10"/>
-          <circle class="donut-ring" cx="75" cy="75" r="60" fill="none" stroke="var(--cyan)" stroke-width="10"
-            stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"
-            transform="rotate(-90 75 75)" data-target="314" data-circumference="377"/>
-          <text x="75" y="70" text-anchor="middle" fill="var(--cyan-light)" font-family="Space Grotesk" font-size="17" font-weight="800">240GB →</text>
-          <text x="75" y="92" text-anchor="middle" fill="var(--text-primary)" font-family="Space Grotesk" font-size="20" font-weight="800">40GB</text>
-        </svg>
-        <div class="donut-label">Database Size</div>
+      <div class="perf-bar-item" data-before="100" data-after="16.7" data-color="var(--cyan)">
+        <div class="perf-bar-header">
+          <span class="perf-bar-label">Database Size</span>
+          <span class="perf-bar-values"><span class="before-val">240GB</span><span class="after-val" style="color: var(--cyan);">→ 40GB</span></span>
+        </div>
+        <div class="perf-bar-track">
+          <div class="perf-bar-before" style="width: 100%; background: var(--cyan);"></div>
+          <div class="perf-bar-after" style="background: linear-gradient(90deg, var(--cyan), #67e8f9);"></div>
+          <div class="perf-bar-badge" style="color: var(--cyan);">83% smaller</div>
+        </div>
       </div>
-      <div class="donut-item">
-        <svg viewBox="0 0 150 150">
-          <circle cx="75" cy="75" r="60" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="10"/>
-          <circle class="donut-ring" cx="75" cy="75" r="60" fill="none" stroke="var(--green)" stroke-width="10"
-            stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"
-            transform="rotate(-90 75 75)" data-target="260" data-circumference="377"/>
-          <text x="75" y="70" text-anchor="middle" fill="var(--green-light)" font-family="Space Grotesk" font-size="17" font-weight="800">6 DAGs →</text>
-          <text x="75" y="92" text-anchor="middle" fill="var(--text-primary)" font-family="Space Grotesk" font-size="22" font-weight="800">2</text>
-        </svg>
-        <div class="donut-label">Pipeline Consolidation</div>
+      <div class="perf-bar-item" data-before="100" data-after="33" data-color="var(--green)">
+        <div class="perf-bar-header">
+          <span class="perf-bar-label">Pipeline Consolidation</span>
+          <span class="perf-bar-values"><span class="before-val">6 DAGs</span><span class="after-val" style="color: var(--green-light);">→ 2 DAGs</span></span>
+        </div>
+        <div class="perf-bar-track">
+          <div class="perf-bar-before" style="width: 100%; background: var(--green);"></div>
+          <div class="perf-bar-after" style="background: linear-gradient(90deg, var(--green), var(--green-light));"></div>
+          <div class="perf-bar-badge" style="color: var(--green-light);">67% fewer</div>
+        </div>
       </div>
-      <div class="donut-item">
-        <svg viewBox="0 0 150 150">
-          <circle cx="75" cy="75" r="60" fill="none" stroke="rgba(245,158,11,0.15)" stroke-width="10"/>
-          <circle class="donut-ring" cx="75" cy="75" r="60" fill="none" stroke="var(--amber)" stroke-width="10"
-            stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"
-            transform="rotate(-90 75 75)" data-target="264" data-circumference="377"/>
-          <text x="75" y="72" text-anchor="middle" fill="var(--amber-light)" font-family="Space Grotesk" font-size="22" font-weight="800">-70%</text>
-          <text x="75" y="90" text-anchor="middle" fill="var(--text-primary)" font-family="Space Grotesk" font-size="11" font-weight="700">Processing Time</text>
-        </svg>
-        <div class="donut-label">Shipsta ETL</div>
+      <div class="perf-bar-item" data-before="100" data-after="30" data-color="var(--amber)">
+        <div class="perf-bar-header">
+          <span class="perf-bar-label">Shipsta ETL</span>
+          <span class="perf-bar-values"><span class="before-val">Before</span><span class="after-val" style="color: var(--amber-light);">→ 70% faster</span></span>
+        </div>
+        <div class="perf-bar-track">
+          <div class="perf-bar-before" style="width: 100%; background: var(--amber);"></div>
+          <div class="perf-bar-after" style="background: linear-gradient(90deg, var(--amber), var(--amber-light));"></div>
+          <div class="perf-bar-badge" style="color: var(--amber-light);">-70% time</div>
+        </div>
       </div>
     </div>
 
@@ -3443,36 +3502,39 @@ document.querySelectorAll('.feature-card, .stat-card, .quote-card, .ownership-pi
   });
 });
 
-// ===== DONUT CHART ANIMATION (staggered) =====
-const donutObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const items = entry.target.querySelectorAll('.donut-item');
-      items.forEach((item, i) => {
-        // Scale-in stagger for each donut
+// ===== PERFORMANCE BAR ANIMATION =====
+const perfBars = document.getElementById('perfBars');
+if (perfBars) {
+  ScrollTrigger.create({
+    trigger: perfBars,
+    start: 'top 80%',
+    once: true,
+    onEnter: () => {
+      perfBars.querySelectorAll('.perf-bar-item').forEach((item, i) => {
+        const afterPercent = parseFloat(item.dataset.after);
+        const barAfter = item.querySelector('.perf-bar-after');
+        const badge = item.querySelector('.perf-bar-badge');
+
+        // Fade in the whole row
         gsap.fromTo(item,
-          { opacity: 0, scale: 0.6, y: 30 },
-          { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.5)', delay: i * 0.2 }
+          { opacity: 0, x: -40 },
+          { opacity: 1, x: 0, duration: 0.6, ease: 'back.out(1.4)', delay: i * 0.2 }
         );
-        // Ring fill with stagger
-        const ring = item.querySelector('.donut-ring');
-        if (ring) {
-          const circ = parseInt(ring.dataset.circumference) || 377;
-          const target = parseInt(ring.dataset.target);
-          gsap.to(ring, {
-            strokeDashoffset: circ - target,
-            duration: 2,
-            ease: 'power3.out',
-            delay: 0.5 + i * 0.25
-          });
-        }
+
+        // First show full "before" bar, then shrink to "after"
+        gsap.fromTo(barAfter,
+          { width: '100%' },
+          { width: afterPercent + '%', duration: 1.8, ease: 'power3.inOut', delay: 0.4 + i * 0.2 }
+        );
+
+        // Pop in the badge at the end
+        gsap.to(badge,
+          { opacity: 1, duration: 0.4, ease: 'back.out(2)', delay: 1.6 + i * 0.2 }
+        );
       });
-      donutObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.3 });
-
-document.querySelectorAll('.donut-container').forEach(el => donutObserver.observe(el));
+}
 </script>
 
 </body>
