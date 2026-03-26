@@ -1659,88 +1659,6 @@ section {
   50% { transform: translateX(6px); opacity: 1; }
 }
 
-/* ===== PROPOSAL SECTION ===== */
-.proposal-section {
-  background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), rgba(6, 182, 212, 0.04));
-  border-radius: 24px;
-  border: 1px solid rgba(124, 58, 237, 0.2);
-  padding: 3rem;
-  text-align: center;
-}
-
-.proposal-numbers {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  margin: 2rem 0;
-  flex-wrap: wrap;
-}
-
-.proposal-current {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--text-muted);
-}
-
-.proposal-target span {
-  display: inline-block;
-  font-variant-numeric: tabular-nums;
-}
-
-.proposal-arrow {
-  font-size: 2rem;
-  color: var(--purple);
-}
-
-.proposal-target {
-  font-family: var(--font-display);
-  font-size: 3rem;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--green-light), var(--cyan));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.proposal-target small {
-  display: block;
-  font-size: 1rem;
-  -webkit-text-fill-color: var(--green-light);
-  font-weight: 600;
-}
-
-.proposal-reasons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-top: 2rem;
-  text-align: left;
-}
-
-.proposal-reasons .reason {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.75rem;
-  border-radius: 12px;
-  background: rgba(255,255,255,0.02);
-}
-
-.reason .check {
-  color: var(--green);
-  font-size: 1.1rem;
-  margin-top: 0.1rem;
-  flex-shrink: 0;
-}
-
-.reason p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
 /* ===== FOOTER ===== */
 footer {
   padding: 3rem 2rem;
@@ -1843,7 +1761,6 @@ footer .heart { color: var(--rose); }
   .features-grid { grid-template-columns: 1fr; }
   .role-comparison { grid-template-columns: 1fr; text-align: center; }
   .role-arrow { transform: rotate(90deg); }
-  .proposal-reasons { grid-template-columns: 1fr; }
   .quotes-grid { grid-template-columns: 1fr; }
   .bar-label { min-width: 100px; font-size: 0.7rem; }
 }
@@ -2002,7 +1919,6 @@ footer .heart { color: var(--rose); }
       <li><a href="#always-there">Reliability</a></li>
       <li><a href="#knowledge">Knowledge</a></li>
       <li><a href="#manager">Manager</a></li>
-      <li><a href="#proposal">Proposal</a></li>
     </ul>
   </div>
 </nav>
@@ -2026,7 +1942,7 @@ footer .heart { color: var(--rose); }
     </p>
     <div class="hero-cta">
       <a href="#impact" class="btn btn-primary">See the Numbers ↓</a>
-      <a href="#proposal" class="btn btn-ghost">Jump to Proposal</a>
+      <a href="#manager" class="btn btn-ghost">Manager's Review →</a>
     </div>
   </div>
   <div class="scroll-indicator">
@@ -2916,57 +2832,6 @@ footer .heart { color: var(--rose); }
   </div>
 </section>
 
-<div class="section-divider"></div>
-
-<!-- ====================== THE PROPOSAL ====================== -->
-<section id="proposal">
-  <div class="section-inner">
-    <div class="reveal">
-      <span class="section-label">the proposal</span>
-      <h2 class="section-title">The Ask</h2>
-      <p class="section-subtitle">What matters most is that my compensation reflects the engineering role I'm already performing.</p>
-    </div>
-
-    <div class="proposal-section reveal-scale">
-      <div class="proposal-numbers">
-        <div class="proposal-current">$2,900/mo</div>
-        <div class="proposal-arrow">→</div>
-        <div class="proposal-target">
-          $<span id="salaryCounter">0</span>/mo
-          <small>(+21%)</small>
-        </div>
-      </div>
-
-      <div class="proposal-reasons">
-        <div class="reason">
-          <span class="check">✓</span>
-          <p><strong>Full A-Z ownership:</strong> Ticket design, DB schema, backend, frontend, APIs, ETL pipelines & documentation — every feature end-to-end</p>
-        </div>
-        <div class="reason">
-          <span class="check">✓</span>
-          <p><strong>200+ PRs confirmed by manager</strong> with end-to-end ownership (BE, FE, Data)</p>
-        </div>
-        <div class="reason">
-          <span class="check">✓</span>
-          <p><strong>API performance optimization:</strong> 16s → 100ms (query tuning, Redis caching, zero downtime)</p>
-        </div>
-        <div class="reason">
-          <span class="check">✓</span>
-          <p><strong>Shipsta integration:</strong> Led full-stack effort processing 200M+ records/week with ~70% processing time reduction</p>
-        </div>
-        <div class="reason">
-          <span class="check">✓</span>
-          <p><strong>Cross-team leadership</strong> — code reviewer, architecture advisor, knowledge sharer across all teams</p>
-        </div>
-        <div class="reason">
-          <span class="check">✓</span>
-          <p><strong>Open to phased approach</strong> — flexible on timing to reach $3,500 by end of 2026</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ====================== FOOTER ====================== -->
 <footer>
   <p>Built with <span class="heart">♥</span> — Hamza Sabri · Freightos Data · 2026</p>
@@ -3516,73 +3381,7 @@ gsap.fromTo('.timeline-item',
   }
 );
 
-// --- Proposal Section: grand entrance ---
-gsap.fromTo('.proposal-section',
-  { opacity: 0, y: 60, scale: 0.9 },
-  {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    duration: 1,
-    ease: 'back.out(1.5)',
-    scrollTrigger: {
-      trigger: '.proposal-section',
-      start: 'top 80%',
-      toggleActions: 'play none none none',
-    }
-  }
-);
 
-// --- Proposal Numbers: current appears, arrow, then target counts 0→2900→3500 ---
-ScrollTrigger.create({
-  trigger: '.proposal-section',
-  start: 'top 75%',
-  once: true,
-  onEnter: () => {
-    const counterEl = document.getElementById('salaryCounter');
-    const counter = { val: 0 };
-
-    // Step 1: current salary slides in
-    gsap.fromTo('.proposal-current', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' });
-    // Step 2: arrow pops in
-    gsap.fromTo('.proposal-arrow', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.5, delay: 0.3, ease: 'back.out(2)' });
-    // Step 3: target fades in, then counter starts
-    gsap.fromTo('.proposal-target', { opacity: 0, x: 30, scale: 0.8 }, {
-      opacity: 1, x: 0, scale: 1, duration: 0.8, delay: 0.5, ease: 'elastic.out(1, 0.5)',
-      onComplete: () => {
-        // Phase 1: fast count 0 → 2,900
-        gsap.to(counter, {
-          val: 2900,
-          duration: 1.5,
-          ease: 'power2.out',
-          onUpdate: () => { counterEl.textContent = Math.round(counter.val).toLocaleString(); },
-          onComplete: () => {
-            // Brief pause, then Phase 2: slow count 2,900 → 3,500
-            gsap.to(counter, {
-              val: 3500,
-              duration: 2.5,
-              delay: 0.5,
-              ease: 'power1.inOut',
-              onUpdate: () => {
-                counterEl.textContent = Math.round(counter.val).toLocaleString();
-                const progress = (counter.val - 2900) / 600;
-                if (progress > 0.05) {
-                  counterEl.style.background = `linear-gradient(135deg, rgba(52,211,153,${0.6+progress*0.4}), rgba(34,211,238,${0.4+progress*0.6}))`;
-                  counterEl.style.webkitBackgroundClip = 'text';
-                  counterEl.style.webkitTextFillColor = 'transparent';
-                }
-              },
-              onComplete: () => {
-                // Pulse the final number
-                gsap.fromTo(counterEl, { scale: 1 }, { scale: 1.2, duration: 0.3, yoyo: true, repeat: 1, ease: 'power2.inOut' });
-              }
-            });
-          }
-        });
-      }
-    });
-  }
-});
 
 // --- Role Comparison: slide in from sides ---
 gsap.fromTo('.role-box.then',
