@@ -1028,6 +1028,306 @@ section {
   .hackathon-initiatives { grid-template-columns: 1fr; }
 }
 
+/* ===== ALWAYS THERE ===== */
+.always-there-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.always-hero {
+  position: relative;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.06) 0%, rgba(6, 182, 212, 0.04) 50%, rgba(124, 58, 237, 0.06) 100%);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  text-align: center;
+}
+
+.always-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--green), var(--cyan), var(--purple));
+}
+
+.always-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, var(--green-light), var(--cyan-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.always-pulse-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+  animation: alwaysOnlinePulse 2s ease-in-out infinite;
+}
+
+@keyframes alwaysOnlinePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+}
+
+.always-subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.always-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.always-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: left;
+  transition: all 0.4s var(--ease-out-expo);
+  position: relative;
+  overflow: hidden;
+}
+
+.always-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.always-card:nth-child(1)::before { background: linear-gradient(90deg, var(--green), var(--cyan)); }
+.always-card:nth-child(2)::before { background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+.always-card:nth-child(3)::before { background: linear-gradient(90deg, var(--purple), var(--amber)); }
+.always-card:nth-child(4)::before { background: linear-gradient(90deg, var(--amber), var(--green)); }
+
+.always-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+}
+
+.always-card:hover::before { opacity: 1; }
+
+.always-card-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.always-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.always-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.always-card .always-tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  margin-top: 1rem;
+  letter-spacing: 0.03em;
+}
+
+.always-card.gsap-hidden {
+  opacity: 0;
+  transform: translateY(80px) scale(0.5);
+}
+
+@media (max-width: 768px) {
+  .always-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== KNOWLEDGE SHARING ===== */
+.knowledge-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.knowledge-demos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.demo-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.4s var(--ease-out-expo);
+  position: relative;
+  overflow: hidden;
+}
+
+.demo-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.demo-card:nth-child(1)::before { background: linear-gradient(90deg, var(--amber), var(--orange)); }
+.demo-card:nth-child(2)::before { background: linear-gradient(90deg, var(--cyan), var(--purple)); }
+
+.demo-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+}
+
+.demo-card:hover::before { opacity: 1; }
+
+.demo-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  margin-bottom: 1.25rem;
+}
+
+.demo-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.25rem;
+}
+
+.demo-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.demo-card p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.demo-card .demo-tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  margin-top: 1rem;
+  letter-spacing: 0.03em;
+}
+
+.demo-card.gsap-hidden {
+  opacity: 0;
+  transform: translateY(80px) scale(0.5);
+}
+
+.knowledge-traits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.trait-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  border-radius: 14px;
+  padding: 1.25rem;
+  text-align: center;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.trait-card:hover {
+  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.04);
+  transform: translateY(-3px);
+}
+
+.trait-emoji {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.trait-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--amber-light);
+}
+
+.trait-card.gsap-hidden {
+  opacity: 0;
+  transform: translateY(40px) scale(0.8);
+}
+
+@media (max-width: 768px) {
+  .knowledge-demos { grid-template-columns: 1fr; }
+  .knowledge-traits { grid-template-columns: repeat(2, 1fr); }
+}
+
 /* ===== LIFE TIMELINE ===== */
 .life-timeline {
   position: relative;
@@ -1699,8 +1999,9 @@ footer .heart { color: var(--rose); }
       <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#team">Team</a></li>
+      <li><a href="#always-there">Reliability</a></li>
+      <li><a href="#knowledge">Knowledge</a></li>
       <li><a href="#manager">Manager</a></li>
-      <li><a href="#regions">Regions</a></li>
       <li><a href="#proposal">Proposal</a></li>
     </ul>
   </div>
@@ -2243,6 +2544,113 @@ footer .heart { color: var(--rose); }
 
 <div class="section-divider"></div>
 
+<!-- ====================== ALWAYS THERE ====================== -->
+<section id="always-there" class="always-there-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">reliability & responsiveness</span>
+      <h2 class="section-title">Always There. Always Delivering.</h2>
+      <p class="section-subtitle">When the team needs help, I don't wait to be asked twice — and when I see someone under pressure, I step in before they have to ask at all.</p>
+    </div>
+
+    <div class="always-hero reveal-scale">
+      <div class="always-pulse">
+        <span class="always-pulse-dot"></span>
+        Always Online. Always Responsive.
+      </div>
+      <p class="always-subtitle">Whether it's a Slack message at 8 AM or a production issue at midnight — if the team needs me, I'm there. No delays, no excuses, just solutions.</p>
+    </div>
+
+    <div class="always-grid" id="alwaysGrid">
+      <div class="always-card gsap-hidden">
+        <div class="always-card-icon" style="background: rgba(16, 185, 129, 0.12);">⚡</div>
+        <h4>Instant Response</h4>
+        <p>When a teammate reaches out — whether it's a question, a blocker, or a code review — I respond fast. Not because I have to, but because I know momentum matters.</p>
+        <span class="always-tag tag-green">Zero Bottlenecks</span>
+      </div>
+      <div class="always-card gsap-hidden">
+        <div class="always-card-icon" style="background: rgba(6, 182, 212, 0.12);">🎯</div>
+        <h4>Over-Delivering on Requests</h4>
+        <p>When someone asks for help, they don't just get an answer — they get the fix, the context, the documentation, and often a suggestion for how to prevent it next time.</p>
+        <span class="always-tag tag-cyan">Beyond Expectations</span>
+      </div>
+      <div class="always-card gsap-hidden">
+        <div class="always-card-icon" style="background: rgba(124, 58, 237, 0.12);">🤝</div>
+        <h4>Proactive Support</h4>
+        <p>I don't wait for someone to ask. If I see a teammate under stress or overwhelmed with tasks, I approach them first and offer to take something off their plate.</p>
+        <span class="always-tag tag-purple">Taking Initiative</span>
+      </div>
+      <div class="always-card gsap-hidden">
+        <div class="always-card-icon" style="background: rgba(245, 158, 11, 0.12);">🛡️</div>
+        <h4>The Safety Net</h4>
+        <p>Cross-team escalation? Urgent prod issue? Complex debugging session? The team knows they can count on me to jump in, take ownership, and see it through to resolution.</p>
+        <span class="always-tag tag-amber">Dependable</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== KNOWLEDGE SHARING ====================== -->
+<section id="knowledge" class="knowledge-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">knowledge evangelist</span>
+      <h2 class="section-title">Raising the Bar for Everyone.</h2>
+      <p class="section-subtitle">I don't just learn new tools and techniques — I bring them to the team. Two company demos, countless informal sessions, and a constant push to level up together.</p>
+    </div>
+
+    <div class="knowledge-demos" id="demoGrid">
+      <div class="demo-card gsap-hidden">
+        <div class="demo-card-badge" style="background: rgba(245, 158, 11, 0.12); color: var(--amber-light);">🎤 LIVE DEMO</div>
+        <div class="demo-card-icon" style="background: rgba(245, 158, 11, 0.12);">🚀</div>
+        <h4>Raycast — Supercharged Productivity</h4>
+        <p>Presented Raycast to the engineering team — demonstrating how it replaces Spotlight, manages clipboard history, runs scripts, integrates with Jira & GitHub, and automates repetitive workflows. Showed real-world time savings with live examples.</p>
+        <span class="demo-tag tag-amber">Productivity · Tooling · Workflows</span>
+      </div>
+      <div class="demo-card gsap-hidden">
+        <div class="demo-card-badge" style="background: rgba(124, 58, 237, 0.12); color: var(--purple-light);">🎤 LIVE DEMO</div>
+        <div class="demo-card-icon" style="background: rgba(124, 58, 237, 0.12);">🤖</div>
+        <h4>GitHub Copilot — AI-Assisted Development</h4>
+        <p>Demoed GitHub Copilot to the wider team — showing how AI code completion accelerates development, generates tests, explains legacy code, and helps write documentation. Sparked conversations about AI adoption across the company.</p>
+        <span class="demo-tag tag-purple">AI · Dev Productivity · Innovation</span>
+      </div>
+    </div>
+
+    <div class="knowledge-traits" id="traitGrid">
+      <div class="trait-card gsap-hidden">
+        <span class="trait-emoji">🔍</span>
+        <span class="trait-label">Always Exploring</span>
+      </div>
+      <div class="trait-card gsap-hidden">
+        <span class="trait-emoji">📢</span>
+        <span class="trait-label">Sharing First</span>
+      </div>
+      <div class="trait-card gsap-hidden">
+        <span class="trait-emoji">🏗️</span>
+        <span class="trait-label">New System Designs</span>
+      </div>
+      <div class="trait-card gsap-hidden">
+        <span class="trait-emoji">🧠</span>
+        <span class="trait-label">Team Growth</span>
+      </div>
+      <div class="trait-card gsap-hidden">
+        <span class="trait-emoji">⚙️</span>
+        <span class="trait-label">Better Approaches</span>
+      </div>
+    </div>
+
+    <div class="meme-card reveal-scale" style="margin-top: 2rem;">
+      <div class="meme-emoji">💡</div>
+      <div class="meme-title" style="color: var(--amber-light);">If I learn something that could help the team — I share it. Period.</div>
+      <div class="meme-sub">New tool? I demo it. Better pattern? I propose it. Smarter architecture? I design it and document it. Leveling up isn't a solo sport.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
 <!-- ====================== MANAGER'S REVIEW ====================== -->
 <section id="manager" class="manager-review-section">
   <div class="section-inner">
@@ -2456,7 +2864,7 @@ footer .heart { color: var(--rose); }
     <div class="meme-card reveal-scale">
       <div class="meme-emoji">📈</div>
       <div class="meme-title" style="font-size: 1.3rem; color: var(--cyan-light);">"Give it to Hamza, he'll figure it out."</div>
-      <div class="meme-sub" style="font-size: 0.95rem;">That's not a quote — that's a pattern. Backend, frontend, data pipelines, infra, AI prototypes — if it touches the Terminal team, it goes through me.</div>
+      <div class="meme-sub" style="font-size: 0.95rem;">That's not a quote — that's a pattern. Backend, frontend, data pipelines, infra, AI prototypes — if it touches the Terminal team, you bet I am involved 😉</div>
       <div class="meme-footer" style="color: var(--amber);">200+ PRs don't lie.</div>
     </div>
   </div>
@@ -2502,8 +2910,8 @@ footer .heart { color: var(--rose); }
 
     <div class="meme-card reveal-scale" style="margin-top: 2rem;">
       <div class="meme-emoji">💡</div>
-      <div class="meme-title" style="color: var(--amber-light);">I didn't just participate — I made it happen.</div>
-      <div class="meme-sub">Suggested the hackathon, recruited the team, built 3 initiatives, and walked away with a trophy. That's initiative.</div>
+      <div class="meme-title" style="color: var(--amber-light);">We didn't just participate — we brought the heat.</div>
+      <div class="meme-sub">Teamed up with Abdallah, pitched 3 initiatives, built them out together, and walked away with 2nd place. That's what a solid partnership looks like.</div>
     </div>
   </div>
 </section>
@@ -2895,6 +3303,96 @@ gsap.fromTo('.life-node',
   }
 );
 
+// --- Always There Cards: bounce stagger ---
+gsap.fromTo('#alwaysGrid .always-card',
+  {
+    opacity: 0,
+    y: 80,
+    scale: 0.5,
+    rotateX: 40,
+  },
+  {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateX: 0,
+    duration: 0.8,
+    ease: 'back.out(1.7)',
+    stagger: {
+      each: 0.12,
+      from: 'start',
+    },
+    scrollTrigger: {
+      trigger: '#alwaysGrid',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// --- Knowledge Demo Cards: bounce stagger ---
+gsap.fromTo('#demoGrid .demo-card',
+  {
+    opacity: 0,
+    y: 80,
+    scale: 0.5,
+    rotateX: 40,
+  },
+  {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateX: 0,
+    duration: 0.8,
+    ease: 'back.out(1.7)',
+    stagger: {
+      each: 0.15,
+      from: 'start',
+    },
+    scrollTrigger: {
+      trigger: '#demoGrid',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// --- Knowledge Trait Cards: bounce stagger ---
+gsap.fromTo('#traitGrid .trait-card',
+  {
+    opacity: 0,
+    y: 40,
+    scale: 0.8,
+  },
+  {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    duration: 0.6,
+    ease: 'back.out(1.7)',
+    stagger: {
+      each: 0.08,
+      from: 'start',
+    },
+    scrollTrigger: {
+      trigger: '#traitGrid',
+      start: 'top 85%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// --- Always There Hero entrance ---
+ScrollTrigger.create({
+  trigger: '.always-hero',
+  start: 'top 80%',
+  once: true,
+  onEnter: () => {
+    gsap.fromTo('.always-pulse', { opacity: 0, y: 20, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: 'back.out(1.4)' });
+    gsap.fromTo('.always-subtitle', { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.3, ease: 'power3.out' });
+  }
+});
+
 // --- Hackathon Cards: same bounce stagger as tech grid ---
 gsap.fromTo('#hackGrid .hackathon-card',
   {
@@ -3196,7 +3694,7 @@ if (document.getElementById('regionMap') && typeof L !== 'undefined') {
 }
 
 // ===== TILT EFFECT ON CARDS (smooth mouse-following) =====
-document.querySelectorAll('.feature-card, .stat-card, .quote-card, .ownership-pillar, .hackathon-card').forEach(card => {
+document.querySelectorAll('.feature-card, .stat-card, .quote-card, .ownership-pillar, .hackathon-card, .always-card, .demo-card, .trait-card').forEach(card => {
   let tiltRAF = null;
   let currentRotateX = 0, currentRotateY = 0;
   let targetRotateX = 0, targetRotateY = 0;
