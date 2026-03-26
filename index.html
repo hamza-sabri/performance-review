@@ -239,39 +239,17 @@ nav.scrolled {
 }
 
 .hero .subtitle {
-  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-size: clamp(1.05rem, 2.2vw, 1.4rem);
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.7;
   margin-bottom: 2.5rem;
   font-weight: 400;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.4rem 0.6rem;
 }
 
-.hero-tag {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+.hero .subtitle strong {
   color: var(--text-primary);
-  opacity: 0;
-  transform: translateY(15px);
+  font-weight: 600;
 }
-
-.hero-tag-dot {
-  color: var(--purple);
-  font-size: 1.2rem;
-  font-weight: 700;
-  opacity: 0;
-}
-
-.hero-tag:nth-child(1) { color: var(--purple-light); }
-.hero-tag:nth-child(3) { color: var(--cyan-light); }
-.hero-tag:nth-child(5) { color: var(--amber-light); }
-.hero-tag:nth-child(7) { color: var(--green-light); }
-.hero-tag:nth-child(9) { color: var(--rose); }
 
 .hero-cta {
   display: flex;
@@ -1213,6 +1191,11 @@ section {
   margin-top: 2rem;
 }
 
+.carousel-track .always-card {
+  width: 340px;
+  flex-shrink: 0;
+}
+
 .always-card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
@@ -1283,11 +1266,11 @@ section {
 
 .always-card.gsap-hidden {
   opacity: 0;
-  transform: translateY(80px) scale(0.5);
+  transform: translateX(80px);
 }
 
 @media (max-width: 768px) {
-  .always-grid { grid-template-columns: 1fr; }
+  .carousel-track .always-card { width: 280px; }
 }
 
 /* ===== KNOWLEDGE SHARING ===== */
@@ -2054,16 +2037,9 @@ footer .heart { color: var(--rose); }
     <h1>
       Hi, I'm <span class="gradient-text">Hamza Sabri</span>
     </h1>
-    <p class="subtitle" id="heroTagline">
-      <span class="hero-tag">Problem Solver</span>
-      <span class="hero-tag-dot">·</span>
-      <span class="hero-tag">Full-Stack Engineer</span>
-      <span class="hero-tag-dot">·</span>
-      <span class="hero-tag">Data Whisperer</span>
-      <span class="hero-tag-dot">·</span>
-      <span class="hero-tag">API Speedrunner</span>
-      <span class="hero-tag-dot">·</span>
-      <span class="hero-tag">Bug Therapist</span>
+    <p class="subtitle">
+      I ship code, solve problems, and bring snacks to standup.<br>
+      <strong>If it's broken, I'll fix it. If it's missing, I'll build it.</strong>
     </p>
     <div class="hero-cta">
       <a href="#impact" class="btn btn-primary">See the Numbers ↓</a>
@@ -2296,30 +2272,36 @@ footer .heart { color: var(--rose); }
       </div>
     </div>
 
-    <div class="features-grid stagger-children">
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🗄️</div>
-        <h3>MySQL → ClickHouse Migration</h3>
-        <p>Led full migration of Ocean & Air data. Rearchitected schemas for columnar storage and compression. Ran thorough validation (zero data loss), coordinated downstream consumers. Delivered noticeably faster queries and a scalable data layer.</p>
-        <span class="feature-tag tag-cyan">Database · Schema Design</span>
+    <div class="carousel-wrapper">
+      <div class="carousel-nav">
+        <button class="carousel-btn" onclick="document.getElementById('infraTrack').scrollBy({left:-360,behavior:'smooth'})">←</button>
+        <button class="carousel-btn" onclick="document.getElementById('infraTrack').scrollBy({left:360,behavior:'smooth'})">→</button>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(124, 58, 237, 0.12);">🔐</div>
-        <h3>Forecast Permissions Audit</h3>
-        <p>Cross-repo audit across 4 repositories, 50+ files end-to-end (fd-backend, fd-frontend, fd-terminal-management-backend, fd-terminal-management-frontend). Found and fixed 2 critical issues: missing watcher + missing dropdown.</p>
-        <span class="feature-tag tag-purple">Security · 4 Repos</span>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(245, 158, 11, 0.12);">✅</div>
-        <h3>API Validation Hardening</h3>
-        <p>Comprehensive input validation across all External API endpoints. 30+ commits to ensure nobody can break the system — not even with emojis as port names.</p>
-        <span class="feature-tag tag-amber">Reliability · 30+ commits</span>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">📡</div>
-        <h3>Proactive Monitoring</h3>
-        <p>Built Slack notification streams for outlier detection, report health, backfill tracking, and data inconsistencies. Shifted the team from reactive to proactive — catching issues before customers noticed.</p>
-        <span class="feature-tag tag-green">Observability · Slack Streams</span>
+      <div class="carousel-track" id="infraTrack">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🗄️</div>
+          <h3>MySQL → ClickHouse Migration</h3>
+          <p>Led full migration of Ocean & Air data. Rearchitected schemas for columnar storage and compression. Ran thorough validation (zero data loss), coordinated downstream consumers. Delivered noticeably faster queries and a scalable data layer.</p>
+          <span class="feature-tag tag-cyan">Database · Schema Design</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(124, 58, 237, 0.12);">🔐</div>
+          <h3>Forecast Permissions Audit</h3>
+          <p>Cross-repo audit across 4 repositories, 50+ files end-to-end (fd-backend, fd-frontend, fd-terminal-management-backend, fd-terminal-management-frontend). Found and fixed 2 critical issues: missing watcher + missing dropdown.</p>
+          <span class="feature-tag tag-purple">Security · 4 Repos</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(245, 158, 11, 0.12);">✅</div>
+          <h3>API Validation Hardening</h3>
+          <p>Comprehensive input validation across all External API endpoints. 30+ commits to ensure nobody can break the system — not even with emojis as port names.</p>
+          <span class="feature-tag tag-amber">Reliability · 30+ commits</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">📡</div>
+          <h3>Proactive Monitoring</h3>
+          <p>Built Slack notification streams for outlier detection, report health, backfill tracking, and data inconsistencies. Shifted the team from reactive to proactive — catching issues before customers noticed.</p>
+          <span class="feature-tag tag-green">Observability · Slack Streams</span>
+        </div>
       </div>
     </div>
 
@@ -2403,97 +2385,6 @@ footer .heart { color: var(--rose); }
 
 <div class="section-divider"></div>
 
-<!-- ====================== TECH SKILLS (Collapsible) ====================== -->
-<section id="skills">
-  <div class="section-inner">
-    <button class="tech-toggle" id="techToggleBtn" onclick="document.getElementById('techPanel').classList.toggle('open'); this.classList.toggle('open');">
-      <span class="tech-toggle-icon">🛠️</span>
-      <span class="tech-toggle-text">Technologies & Tools</span>
-      <span class="tech-toggle-hint">Tap to explore my stack</span>
-      <span class="tech-toggle-arrow">▾</span>
-    </button>
-
-    <div class="tech-panel" id="techPanel">
-    <div class="tech-grid" id="techGrid">
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">🐍</span><span class="tech-name">Python</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #306998, #1a3a52);"><span class="back-icon">🐍</span><span class="back-label">Python</span><span class="back-tagline">Core language</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">🌀</span><span class="tech-name">Airflow</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #017cee, #00395e);"><span class="back-icon">🌀</span><span class="back-label">Airflow</span><span class="back-tagline">6 DAGs → 2</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">⚡</span><span class="tech-name">FastAPI</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #009688, #004d40);"><span class="back-icon">⚡</span><span class="back-label">FastAPI</span><span class="back-tagline">REST & async</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">⚛️</span><span class="tech-name">React</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #61dafb, #1a2744);"><span class="back-icon">⚛️</span><span class="back-label">React</span><span class="back-tagline">Dashboards & UI</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">🗄️</span><span class="tech-name">ClickHouse</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #fadb14, #5c4a00);"><span class="back-icon">🗄️</span><span class="back-label">ClickHouse</span><span class="back-tagline">OLAP analytics</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">🐬</span><span class="tech-name">MySQL</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #00758f, #003545);"><span class="back-icon">🐬</span><span class="back-label">MySQL</span><span class="back-tagline">240GB → 40GB</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">🔴</span><span class="tech-name">Redis</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #dc382d, #5c1510);"><span class="back-icon">🔴</span><span class="back-label">Redis</span><span class="back-tagline">Cache layer</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">🤖</span><span class="tech-name">GPT-4</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #10a37f, #0a5c48);"><span class="back-icon">🤖</span><span class="back-label">GPT-4</span><span class="back-tagline">MCP pioneer</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">☸️</span><span class="tech-name">GKE / K8s</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #326ce5, #152a5c);"><span class="back-icon">☸️</span><span class="back-label">GKE / K8s</span><span class="back-tagline">Cloud infra</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">📊</span><span class="tech-name">Recharts</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #8884d8, #3a3670);"><span class="back-icon">📊</span><span class="back-label">Recharts</span><span class="back-tagline">Data viz</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">🔀</span><span class="tech-name">Git</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #f05032, #5c1e13);"><span class="back-icon">🔀</span><span class="back-label">Git</span><span class="back-tagline">200+ PRs</span></div>
-        </div>
-      </div>
-      <div class="tech-item gsap-hidden">
-        <div class="flip-inner">
-          <div class="flip-front"><span class="tech-icon">🐳</span><span class="tech-name">Docker</span></div>
-          <div class="flip-back" style="background: linear-gradient(135deg, #2496ed, #0e3d5c);"><span class="back-icon">🐳</span><span class="back-label">Docker</span><span class="back-tagline">Containers</span></div>
-        </div>
-      </div>
-    </div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
 <!-- ====================== CROSS-TEAM IMPACT ====================== -->
 <section id="team">
   <div class="section-inner">
@@ -2558,30 +2449,36 @@ footer .heart { color: var(--rose); }
       <p class="always-subtitle">Whether it's a Slack message at 8 AM or a production issue at midnight — if the team needs me, I'm there. No delays, no excuses, just solutions.</p>
     </div>
 
-    <div class="always-grid" id="alwaysGrid">
-      <div class="always-card gsap-hidden">
-        <div class="always-card-icon" style="background: rgba(16, 185, 129, 0.12);">⚡</div>
-        <h4>Instant Response</h4>
-        <p>When a teammate reaches out — whether it's a question, a blocker, or a code review — I respond fast. Not because I have to, but because I know momentum matters.</p>
-        <span class="always-tag tag-green">Zero Bottlenecks</span>
+    <div class="carousel-wrapper">
+      <div class="carousel-nav">
+        <button class="carousel-btn" onclick="document.getElementById('alwaysTrack').scrollBy({left:-350,behavior:'smooth'})">←</button>
+        <button class="carousel-btn" onclick="document.getElementById('alwaysTrack').scrollBy({left:350,behavior:'smooth'})">→</button>
       </div>
-      <div class="always-card gsap-hidden">
-        <div class="always-card-icon" style="background: rgba(6, 182, 212, 0.12);">🎯</div>
-        <h4>Over-Delivering on Requests</h4>
-        <p>When someone asks for help, they don't just get an answer — they get the fix, the context, the documentation, and often a suggestion for how to prevent it next time.</p>
-        <span class="always-tag tag-cyan">Beyond Expectations</span>
-      </div>
-      <div class="always-card gsap-hidden">
-        <div class="always-card-icon" style="background: rgba(124, 58, 237, 0.12);">🤝</div>
-        <h4>Proactive Support</h4>
-        <p>I don't wait for someone to ask. If I see a teammate under stress or overwhelmed with tasks, I approach them first and offer to take something off their plate.</p>
-        <span class="always-tag tag-purple">Taking Initiative</span>
-      </div>
-      <div class="always-card gsap-hidden">
-        <div class="always-card-icon" style="background: rgba(245, 158, 11, 0.12);">🛡️</div>
-        <h4>The Safety Net</h4>
-        <p>Cross-team escalation? Urgent prod issue? Complex debugging session? The team knows they can count on me to jump in, take ownership, and see it through to resolution.</p>
-        <span class="always-tag tag-amber">Dependable</span>
+      <div class="carousel-track" id="alwaysTrack">
+        <div class="always-card gsap-hidden">
+          <div class="always-card-icon" style="background: rgba(16, 185, 129, 0.12);">⚡</div>
+          <h4>Instant Response</h4>
+          <p>When a teammate reaches out — whether it's a question, a blocker, or a code review — I respond fast. Not because I have to, but because I know momentum matters.</p>
+          <span class="always-tag tag-green">Zero Bottlenecks</span>
+        </div>
+        <div class="always-card gsap-hidden">
+          <div class="always-card-icon" style="background: rgba(6, 182, 212, 0.12);">🎯</div>
+          <h4>Over-Delivering on Requests</h4>
+          <p>When someone asks for help, they don't just get an answer — they get the fix, the context, the documentation, and often a suggestion for how to prevent it next time.</p>
+          <span class="always-tag tag-cyan">Beyond Expectations</span>
+        </div>
+        <div class="always-card gsap-hidden">
+          <div class="always-card-icon" style="background: rgba(124, 58, 237, 0.12);">🤝</div>
+          <h4>Proactive Support</h4>
+          <p>I don't wait for someone to ask. If I see a teammate under stress or overwhelmed with tasks, I approach them first and offer to take something off their plate.</p>
+          <span class="always-tag tag-purple">Taking Initiative</span>
+        </div>
+        <div class="always-card gsap-hidden">
+          <div class="always-card-icon" style="background: rgba(245, 158, 11, 0.12);">🛡️</div>
+          <h4>The Safety Net</h4>
+          <p>Cross-team escalation? Urgent prod issue? Complex debugging session? The team knows they can count on me to jump in, take ownership, and see it through to resolution.</p>
+          <span class="always-tag tag-amber">Dependable</span>
+        </div>
       </div>
     </div>
   </div>
@@ -3111,29 +3008,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ===== GSAP + SCROLLTRIGGER =====
 gsap.registerPlugin(ScrollTrigger);
 
-// --- Tech Grid: animate on panel open ---
-let techAnimated = false;
-document.getElementById('techToggleBtn').addEventListener('click', () => {
-  if (!techAnimated) {
-    techAnimated = true;
-    setTimeout(() => {
-      gsap.fromTo('#techGrid .tech-item',
-        { opacity: 0, y: 50, scale: 0.5, rotateX: 40 },
-        {
-          opacity: 1, y: 0, scale: 1, rotateX: 0,
-          duration: 0.6, ease: 'back.out(1.7)',
-          stagger: { each: 0.06, from: 'start', grid: 'auto' }
-        }
-      );
-      setTimeout(() => {
-        document.querySelectorAll('#techGrid .tech-item').forEach((item, i) => {
-          setTimeout(() => item.classList.add('animate-icons'), i * 80);
-        });
-      }, 900);
-    }, 100);
-  }
-});
-
 // --- Stat Cards: pop-in with elastic ease ---
 gsap.fromTo('.stat-card',
   { opacity: 0, scale: 0.4, y: 50 },
@@ -3206,19 +3080,15 @@ gsap.fromTo('.life-node',
   }
 );
 
-// --- Always There Cards: bounce stagger ---
-gsap.fromTo('#alwaysGrid .always-card',
+// --- Always There Cards: carousel slide-in ---
+gsap.fromTo('#alwaysTrack .always-card',
   {
     opacity: 0,
-    y: 80,
-    scale: 0.5,
-    rotateX: 40,
+    x: 80,
   },
   {
     opacity: 1,
-    y: 0,
-    scale: 1,
-    rotateX: 0,
+    x: 0,
     duration: 0.8,
     ease: 'back.out(1.7)',
     stagger: {
@@ -3226,7 +3096,7 @@ gsap.fromTo('#alwaysGrid .always-card',
       from: 'start',
     },
     scrollTrigger: {
-      trigger: '#alwaysGrid',
+      trigger: '#alwaysTrack',
       start: 'top 80%',
       toggleActions: 'play none none none',
     }
@@ -3426,10 +3296,8 @@ const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 heroTl
   .fromTo('.hero-badge', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6 })
   .fromTo('.hero h1', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, '-=0.3')
-  .fromTo('.hero .subtitle', { opacity: 0 }, { opacity: 1, duration: 0.3 }, '-=0.4')
-  .fromTo('.hero-tag', { opacity: 0, y: 15, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.7)', stagger: 0.1 }, '-=0.2')
-  .fromTo('.hero-tag-dot', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)', stagger: 0.1 }, '-=1.5')
-  .fromTo('.hero-cta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.5')
+  .fromTo('.hero .subtitle', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
+  .fromTo('.hero-cta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
   .fromTo('.scroll-indicator', { opacity: 0 }, { opacity: 1, duration: 0.8 }, '-=0.2');
 
 // ===== LEAFLET MAP =====
@@ -3508,6 +3376,48 @@ if (document.getElementById('regionMap') && typeof L !== 'undefined') {
     }
   });
 }
+
+// ===== CAROUSEL AUTO-SCROLL (pause on hover) =====
+document.querySelectorAll('.carousel-track').forEach(track => {
+  let scrollSpeed = 1;
+  let paused = false;
+  let rafId = null;
+
+  function autoScroll() {
+    if (!paused) {
+      track.scrollLeft += scrollSpeed;
+      // Loop back to start when reaching the end
+      if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 2) {
+        track.scrollLeft = 0;
+      }
+    }
+    rafId = requestAnimationFrame(autoScroll);
+  }
+
+  // Pause on hover over the entire carousel wrapper
+  const wrapper = track.closest('.carousel-wrapper');
+  if (wrapper) {
+    wrapper.addEventListener('mouseenter', () => { paused = true; });
+    wrapper.addEventListener('mouseleave', () => { paused = false; });
+    wrapper.addEventListener('touchstart', () => { paused = true; }, { passive: true });
+    wrapper.addEventListener('touchend', () => { setTimeout(() => { paused = false; }, 2000); });
+  }
+
+  // Also pause during manual scroll interaction
+  track.addEventListener('scroll', () => {
+    paused = true;
+    clearTimeout(track._scrollTimeout);
+    track._scrollTimeout = setTimeout(() => { paused = false; }, 2000);
+  }, { passive: true });
+
+  // Start auto-scroll when track enters viewport
+  ScrollTrigger.create({
+    trigger: track,
+    start: 'top 90%',
+    once: true,
+    onEnter: () => { rafId = requestAnimationFrame(autoScroll); }
+  });
+});
 
 // ===== TILT EFFECT ON CARDS (smooth mouse-following) =====
 document.querySelectorAll('.feature-card, .stat-card, .quote-card, .ownership-pillar, .hackathon-card, .always-card, .demo-card, .trait-card').forEach(card => {
