@@ -501,8 +501,6 @@ section {
   display: flex;
   gap: 1.5rem;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   padding: 0.5rem 0 1.5rem;
   scrollbar-width: none;
@@ -511,7 +509,6 @@ section {
 .carousel-track::-webkit-scrollbar { display: none; }
 
 .carousel-track > * {
-  scroll-snap-align: start;
   flex-shrink: 0;
 }
 
@@ -526,11 +523,7 @@ section {
 }
 
 .carousel-nav {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  display: none;
 }
 
 .carousel-btn {
@@ -2196,13 +2189,6 @@ footer .heart { color: var(--rose); }
       </div>
     </div>
 
-    <!-- meme -->
-    <div class="meme-card reveal-scale">
-      <div class="meme-emoji">🐛</div>
-      <div class="meme-title">GPT-4 at 3am: "I predict a +184% price jump"</div>
-      <div class="meme-sub">Me: "That's not how freight works."</div>
-      <div class="meme-footer">— actual bug I fixed</div>
-    </div>
   </div>
 </section>
 
@@ -3377,45 +3363,42 @@ if (document.getElementById('regionMap') && typeof L !== 'undefined') {
   });
 }
 
-// ===== CAROUSEL AUTO-SCROLL (pause on hover) =====
+// ===== CAROUSEL AUTO-SCROLL (GSAP-powered infinite loop) =====
 document.querySelectorAll('.carousel-track').forEach(track => {
-  let scrollSpeed = 1;
-  let paused = false;
-  let rafId = null;
+  const maxScroll = track.scrollWidth - track.clientWidth;
+  if (maxScroll <= 0) return; // nothing to scroll
 
-  function autoScroll() {
-    if (!paused) {
-      track.scrollLeft += scrollSpeed;
-      // Loop back to start when reaching the end
-      if (track.scrollLeft >= track.scrollWidth - track.clientWidth - 2) {
-        track.scrollLeft = 0;
-      }
+  // Calculate duration based on content width (slower for longer tracks)
+  const duration = maxScroll / 40; // ~40px per second
+
+  // Create the GSAP tween that scrolls to the end, then jumps back and repeats
+  const tween = gsap.to(track, {
+    scrollLeft: maxScroll,
+    duration: duration,
+    ease: 'none',
+    repeat: -1,
+    paused: true,
+    onRepeat: () => {
+      // Snap back to start on each repeat
+      gsap.set(track, { scrollLeft: 0 });
     }
-    rafId = requestAnimationFrame(autoScroll);
-  }
+  });
 
-  // Pause on hover over the entire carousel wrapper
+  // Pause on hover
   const wrapper = track.closest('.carousel-wrapper');
   if (wrapper) {
-    wrapper.addEventListener('mouseenter', () => { paused = true; });
-    wrapper.addEventListener('mouseleave', () => { paused = false; });
-    wrapper.addEventListener('touchstart', () => { paused = true; }, { passive: true });
-    wrapper.addEventListener('touchend', () => { setTimeout(() => { paused = false; }, 2000); });
+    wrapper.addEventListener('mouseenter', () => tween.pause());
+    wrapper.addEventListener('mouseleave', () => tween.resume());
+    wrapper.addEventListener('touchstart', () => tween.pause(), { passive: true });
+    wrapper.addEventListener('touchend', () => { setTimeout(() => tween.resume(), 2000); });
   }
 
-  // Also pause during manual scroll interaction
-  track.addEventListener('scroll', () => {
-    paused = true;
-    clearTimeout(track._scrollTimeout);
-    track._scrollTimeout = setTimeout(() => { paused = false; }, 2000);
-  }, { passive: true });
-
-  // Start auto-scroll when track enters viewport
+  // Start when track enters viewport
   ScrollTrigger.create({
     trigger: track,
     start: 'top 90%',
     once: true,
-    onEnter: () => { rafId = requestAnimationFrame(autoScroll); }
+    onEnter: () => tween.play()
   });
 });
 
