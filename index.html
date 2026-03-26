@@ -897,6 +897,137 @@ section {
 
 .quote-highlight::before { opacity: 1 !important; }
 
+/* ===== HACKATHON ===== */
+.hackathon-hero {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.hackathon-trophy {
+  font-size: 4rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  animation: trophyFloat 3s ease-in-out infinite;
+}
+
+@keyframes trophyFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(-3deg); }
+  75% { transform: translateY(-4px) rotate(3deg); }
+}
+
+.hackathon-place {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--amber-light), #f59e0b, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.3rem;
+}
+
+.hackathon-team {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.hackathon-initiatives {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.hackathon-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s var(--ease-out-expo);
+  will-change: transform, opacity;
+}
+
+.hackathon-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.hackathon-card:hover::before { opacity: 1; }
+
+.hackathon-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+}
+
+.hackathon-card:nth-child(1)::before { background: linear-gradient(90deg, var(--purple), var(--cyan)); }
+.hackathon-card:nth-child(2)::before { background: linear-gradient(90deg, var(--green), var(--amber)); }
+.hackathon-card:nth-child(3)::before { background: linear-gradient(90deg, var(--rose), var(--orange)); }
+
+.hackathon-card-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 1.25rem;
+  position: relative;
+}
+
+.hackathon-card-icon::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 18px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.hackathon-card:hover .hackathon-card-icon::after { opacity: 1; }
+
+.hackathon-card h4 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.hackathon-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.hackathon-card .hack-tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  margin-top: 1rem;
+  letter-spacing: 0.03em;
+}
+
+.hackathon-card.gsap-hidden {
+  opacity: 0;
+  transform: translateY(80px) scale(0.5);
+}
+
+@media (max-width: 768px) {
+  .hackathon-initiatives { grid-template-columns: 1fr; }
+}
+
 /* ===== LIFE TIMELINE ===== */
 .life-timeline {
   position: relative;
@@ -2323,10 +2454,56 @@ footer .heart { color: var(--rose); }
 
     <!-- meme -->
     <div class="meme-card reveal-scale">
-      <div class="meme-emoji">🚀</div>
-      <div class="meme-title" style="font-size: 1.3rem; color: var(--cyan-light);">6 months ago: "I'm a Data Analyst"</div>
-      <div class="meme-sub" style="font-size: 0.95rem;">Today: *deploys AI prediction engine, audits 4 repos, proposes VPS migration, builds a copilot on the side*</div>
-      <div class="meme-footer" style="color: var(--amber);">Kaizen hits different</div>
+      <div class="meme-emoji">📈</div>
+      <div class="meme-title" style="font-size: 1.3rem; color: var(--cyan-light);">"Give it to Hamza, he'll figure it out."</div>
+      <div class="meme-sub" style="font-size: 0.95rem;">That's not a quote — that's a pattern. Backend, frontend, data pipelines, infra, AI prototypes — if it touches the Terminal team, it goes through me.</div>
+      <div class="meme-footer" style="color: var(--amber);">200+ PRs don't lie.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== HACKATHON ====================== -->
+<section id="hackathon">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">going beyond the job</span>
+      <h2 class="section-title">I Suggested a Hackathon. We Won 2nd Place.</h2>
+      <p class="section-subtitle">Pitched the idea of a company hackathon, teamed up with my manager Abdallah, and delivered 3 initiatives in one sprint. We took 2nd place.</p>
+    </div>
+
+    <div class="hackathon-hero reveal-scale">
+      <span class="hackathon-trophy">🏆</span>
+      <div class="hackathon-place">2nd Place</div>
+      <div class="hackathon-team">Team: Hamza Sabri + Abdallah Khalaf</div>
+    </div>
+
+    <div class="hackathon-initiatives" id="hackGrid">
+      <div class="hackathon-card gsap-hidden">
+        <div class="hackathon-card-icon" style="background: rgba(124, 58, 237, 0.12);">🤖</div>
+        <h4>AI-Powered Support Copilot</h4>
+        <p>Built an intelligent copilot that assists support teams using AI to surface relevant data, suggest responses, and reduce resolution time across customer queries.</p>
+        <span class="hack-tag tag-purple">GPT-4 · RAG · Prototype</span>
+      </div>
+      <div class="hackathon-card gsap-hidden">
+        <div class="hackathon-card-icon" style="background: rgba(16, 185, 129, 0.12);">💰</div>
+        <h4>Cost Reduction — Dead Weight Removal</h4>
+        <p>Identified and proposed removal of unused services, orphaned resources, and redundant infrastructure — a clear path to cutting operational costs without impacting performance.</p>
+        <span class="hack-tag tag-green">Infra · Cost Savings</span>
+      </div>
+      <div class="hackathon-card gsap-hidden">
+        <div class="hackathon-card-icon" style="background: rgba(249, 115, 22, 0.12);">⚡</div>
+        <h4>API Performance + Redis</h4>
+        <p>Presented the case for introducing Redis caching across critical API endpoints — the same strategy that later turned 16s response times into 100ms in production.</p>
+        <span class="hack-tag tag-orange">Redis · Performance</span>
+      </div>
+    </div>
+
+    <div class="meme-card reveal-scale" style="margin-top: 2rem;">
+      <div class="meme-emoji">💡</div>
+      <div class="meme-title" style="color: var(--amber-light);">I didn't just participate — I made it happen.</div>
+      <div class="meme-sub">Suggested the hackathon, recruited the team, built 3 initiatives, and walked away with a trophy. That's initiative.</div>
     </div>
   </div>
 </section>
@@ -2718,6 +2895,45 @@ gsap.fromTo('.life-node',
   }
 );
 
+// --- Hackathon Cards: same bounce stagger as tech grid ---
+gsap.fromTo('#hackGrid .hackathon-card',
+  {
+    opacity: 0,
+    y: 80,
+    scale: 0.5,
+    rotateX: 40,
+  },
+  {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateX: 0,
+    duration: 0.8,
+    ease: 'back.out(1.7)',
+    stagger: {
+      each: 0.15,
+      from: 'start',
+    },
+    scrollTrigger: {
+      trigger: '#hackGrid',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// Trophy float animation on scroll
+ScrollTrigger.create({
+  trigger: '.hackathon-hero',
+  start: 'top 80%',
+  once: true,
+  onEnter: () => {
+    gsap.fromTo('.hackathon-trophy', { scale: 0, rotate: -20 }, { scale: 1, rotate: 0, duration: 1, ease: 'elastic.out(1, 0.4)' });
+    gsap.fromTo('.hackathon-place', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, delay: 0.4, ease: 'power3.out' });
+    gsap.fromTo('.hackathon-team', { opacity: 0 }, { opacity: 1, duration: 0.5, delay: 0.7 });
+  }
+});
+
 // --- Ownership Card pillars stagger ---
 gsap.fromTo('.ownership-pillar',
   { opacity: 0, y: 20, scale: 0.85 },
@@ -2980,7 +3196,7 @@ if (document.getElementById('regionMap') && typeof L !== 'undefined') {
 }
 
 // ===== TILT EFFECT ON CARDS (smooth mouse-following) =====
-document.querySelectorAll('.feature-card, .stat-card, .quote-card, .ownership-pillar').forEach(card => {
+document.querySelectorAll('.feature-card, .stat-card, .quote-card, .ownership-pillar, .hackathon-card').forEach(card => {
   let tiltRAF = null;
   let currentRotateX = 0, currentRotateY = 0;
   let targetRotateX = 0, targetRotateY = 0;
