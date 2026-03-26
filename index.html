@@ -244,12 +244,34 @@ nav.scrolled {
   line-height: 1.6;
   margin-bottom: 2.5rem;
   font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.6rem;
 }
 
-.hero .subtitle strong {
-  color: var(--text-primary);
+.hero-tag {
+  font-family: var(--font-display);
   font-weight: 600;
+  font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+  color: var(--text-primary);
+  opacity: 0;
+  transform: translateY(15px);
 }
+
+.hero-tag-dot {
+  color: var(--purple);
+  font-size: 1.2rem;
+  font-weight: 700;
+  opacity: 0;
+}
+
+.hero-tag:nth-child(1) { color: var(--purple-light); }
+.hero-tag:nth-child(3) { color: var(--cyan-light); }
+.hero-tag:nth-child(5) { color: var(--amber-light); }
+.hero-tag:nth-child(7) { color: var(--green-light); }
+.hero-tag:nth-child(9) { color: var(--rose); }
 
 .hero-cta {
   display: flex;
@@ -490,6 +512,94 @@ section {
 .bar-fill.green { background: linear-gradient(90deg, #059669, var(--green-light)); }
 .bar-fill.amber { background: linear-gradient(90deg, #d97706, var(--amber-light)); }
 .bar-fill.orange { background: linear-gradient(90deg, #ea580c, var(--orange)); }
+
+/* ===== HORIZONTAL CAROUSEL ===== */
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.5rem 0 1.5rem;
+  scrollbar-width: none;
+}
+
+.carousel-track::-webkit-scrollbar { display: none; }
+
+.carousel-track > * {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+}
+
+.carousel-track .feature-card {
+  width: 340px;
+  flex-shrink: 0;
+}
+
+.carousel-track .quote-card {
+  width: 350px;
+  flex-shrink: 0;
+}
+
+.carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.carousel-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.carousel-btn:hover {
+  border-color: var(--purple);
+  color: var(--purple-light);
+  background: rgba(124, 58, 237, 0.1);
+}
+
+.carousel-dots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-subtle);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 0;
+}
+
+.carousel-dot.active {
+  background: var(--purple);
+  width: 24px;
+  border-radius: 4px;
+}
 
 /* ===== FEATURE CARDS ===== */
 .features-grid {
@@ -1477,6 +1587,73 @@ section {
   font-style: italic;
 }
 
+/* ===== TECH TOGGLE & PANEL ===== */
+.tech-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out-expo);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+}
+
+.tech-toggle:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+}
+
+.tech-toggle.open {
+  border-radius: 16px 16px 0 0;
+  border-color: var(--purple);
+  border-bottom-color: transparent;
+}
+
+.tech-toggle-icon { font-size: 1.4rem; }
+
+.tech-toggle-text {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.tech-toggle-hint {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-left: auto;
+}
+
+.tech-toggle-arrow {
+  font-size: 1.2rem;
+  color: var(--purple-light);
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.tech-toggle.open .tech-toggle-arrow {
+  transform: rotate(180deg);
+}
+
+.tech-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s var(--ease-out-expo), padding 0.3s;
+  background: var(--bg-card);
+  border: 1px solid var(--purple);
+  border-top: none;
+  border-radius: 0 0 16px 16px;
+  padding: 0 1.75rem;
+}
+
+.tech-panel.open {
+  max-height: 600px;
+  padding: 1.5rem 1.75rem;
+}
+
 /* ===== TECH GRID ===== */
 .tech-grid {
   display: grid;
@@ -1601,64 +1778,6 @@ section {
   transform: translateY(80px) scale(0.5);
 }
 
-/* ===== ROLE EVOLUTION ===== */
-.role-comparison {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 2rem;
-  align-items: center;
-  margin: 2rem 0;
-}
-
-.role-box {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: 20px;
-  padding: 2rem;
-}
-
-.role-box h3 {
-  font-family: var(--font-display);
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
-}
-
-.role-box ul {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.role-box ul li {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  padding-left: 1.25rem;
-  position: relative;
-}
-
-.role-box ul li::before {
-  content: '›';
-  position: absolute;
-  left: 0;
-  color: var(--text-muted);
-}
-
-.role-box.now { border-color: var(--cyan); }
-.role-box.now h3 { color: var(--cyan-light); }
-.role-box.now ul li::before { color: var(--cyan); }
-
-.role-arrow {
-  font-size: 2rem;
-  color: var(--purple);
-  animation: arrow-pulse 2s ease-in-out infinite;
-}
-
-@keyframes arrow-pulse {
-  0%, 100% { transform: translateX(0); opacity: 0.6; }
-  50% { transform: translateX(6px); opacity: 1; }
-}
-
 /* ===== FOOTER ===== */
 footer {
   padding: 3rem 2rem;
@@ -1758,9 +1877,8 @@ footer .heart { color: var(--rose); }
 @media (max-width: 768px) {
   .nav-links { display: none; }
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .features-grid { grid-template-columns: 1fr; }
-  .role-comparison { grid-template-columns: 1fr; text-align: center; }
-  .role-arrow { transform: rotate(90deg); }
+  .carousel-track .feature-card { width: 280px; }
+
   .quotes-grid { grid-template-columns: 1fr; }
   .bar-label { min-width: 100px; font-size: 0.7rem; }
 }
@@ -1914,10 +2032,11 @@ footer .heart { color: var(--rose); }
       <li><a href="#hero">Home</a></li>
       <li><a href="#impact">Impact</a></li>
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#skills">Skills</a></li>
       <li><a href="#team">Team</a></li>
       <li><a href="#always-there">Reliability</a></li>
       <li><a href="#knowledge">Knowledge</a></li>
+      <li><a href="#life-journey">Journey</a></li>
+      <li><a href="#hackathon">Hackathon</a></li>
       <li><a href="#manager">Manager</a></li>
     </ul>
   </div>
@@ -1935,10 +2054,16 @@ footer .heart { color: var(--rose); }
     <h1>
       Hi, I'm <span class="gradient-text">Hamza Sabri</span>
     </h1>
-    <p class="subtitle">
-      <strong>SDE Level II</strong> — from Data Analyst to <strong>Full-Stack & Data Engineer</strong> —
-      building prediction engines, shipping features end-to-end,
-      and driving impact across the <strong>Freightos Terminal Team</strong>.
+    <p class="subtitle" id="heroTagline">
+      <span class="hero-tag">Problem Solver</span>
+      <span class="hero-tag-dot">·</span>
+      <span class="hero-tag">Full-Stack Engineer</span>
+      <span class="hero-tag-dot">·</span>
+      <span class="hero-tag">Data Whisperer</span>
+      <span class="hero-tag-dot">·</span>
+      <span class="hero-tag">API Speedrunner</span>
+      <span class="hero-tag-dot">·</span>
+      <span class="hero-tag">Bug Therapist</span>
     </p>
     <div class="hero-cta">
       <a href="#impact" class="btn btn-primary">See the Numbers ↓</a>
@@ -2029,50 +2154,6 @@ footer .heart { color: var(--rose); }
 
 <div class="section-divider"></div>
 
-<!-- ====================== ROLE EVOLUTION ====================== -->
-<section id="evolution">
-  <div class="section-inner">
-    <div class="reveal">
-      <span class="section-label">growth</span>
-      <h2 class="section-title">Role Evolution</h2>
-      <p class="section-subtitle">This transition happened organically — by delivering increasingly complex work.</p>
-    </div>
-
-    <div class="role-comparison reveal-scale">
-      <div class="role-box then">
-        <h3 style="color: var(--text-muted);">Then: Data Analyst</h3>
-        <ul>
-          <li>SQL queries & reporting</li>
-          <li>Basic scripting</li>
-          <li>Limited scope</li>
-          <li>Task execution</li>
-        </ul>
-      </div>
-      <div class="role-arrow">→</div>
-      <div class="role-box now">
-        <h3>Now: Full-Stack & Data Engineer</h3>
-        <ul>
-          <li>Airflow DAGs & ETL pipelines</li>
-          <li>FastAPI backends (8+ endpoints)</li>
-          <li>React frontends (Recharts, heatmaps)</li>
-          <li>ClickHouse schemas & Redis caching</li>
-          <li>GKE deployments & DevOps</li>
-          <li>AI/ML pipelines with GPT-4</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- meme -->
-    <div class="meme-card reveal-scale">
-      <div class="meme-emoji">😎</div>
-      <div class="meme-title">My Slack title still says "Data Analyst"</div>
-      <div class="meme-sub">My git history disagrees.</div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
 <!-- ====================== PROJECTS ====================== -->
 <section id="projects">
   <div class="section-inner">
@@ -2082,69 +2163,60 @@ footer .heart { color: var(--rose); }
       <p class="section-subtitle">End-to-end ownership of major features — from architecture design to production deployment.</p>
     </div>
 
-    <div class="features-grid stagger-children">
-      <!-- Prediction Engine -->
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(124, 58, 237, 0.12);">🧠</div>
-        <h3>Prediction Engine</h3>
-        <p>Built a complete AI-powered freight rate forecasting system from scratch. Airflow DAG → FastAPI backend → React frontend → ClickHouse storage. GPT-4 formula synthesis across 1,200+ route pairs for SPOT and CONTRACT rates. Iterated: V1 (35.7%) → V2 → V3 (76% accuracy).</p>
-        <span class="feature-tag tag-purple">AI/ML · Full-Stack</span>
+    <div class="carousel-wrapper">
+      <div class="carousel-nav">
+        <button class="carousel-btn" onclick="document.getElementById('projectsTrack').scrollBy({left:-360,behavior:'smooth'})">←</button>
+        <button class="carousel-btn" onclick="document.getElementById('projectsTrack').scrollBy({left:360,behavior:'smooth'})">→</button>
       </div>
-
-      <!-- BM Similar -->
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">📊</div>
-        <h3>BM Similar — Feature Launch</h3>
-        <p>Launched a smarter benchmarking feature that unlocked insights for previously uncovered routes. Achieved +20% coverage increase with better customer experience. Includes Tango walkthrough for team enablement.</p>
-        <span class="feature-tag tag-cyan">Data Product · Shipped</span>
-      </div>
-
-      <!-- Benchmark Export -->
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(245, 158, 11, 0.12);">📥</div>
-        <h3>Benchmark Export</h3>
-        <p>Full CSV/XLSX export pipeline — backend streaming, frontend download UX, with rate limiting and permission control. Anton called it: "Looks fantastic!! Thank you!"</p>
-        <span class="feature-tag tag-amber">Feature · Backend + Frontend</span>
-      </div>
-
-      <!-- External APIs -->
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(249, 115, 22, 0.12);">🔗</div>
-        <h3>External APIs Overhaul & Coverage API</h3>
-        <p>36 commits, 33 files, 767 insertions. Added comprehensive validation, air routes support, Coverage API (multi-audience: internal engineering, support team, customer-facing), caching strategy (24h TTL), error handling improvements, and "include_change" flag for price tracking.</p>
-        <span class="feature-tag tag-orange">36 commits · Infrastructure</span>
-      </div>
-
-      <!-- Terminal Copilot -->
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">🤖</div>
-        <h3>Terminal Copilot</h3>
-        <p>Self-initiated internal tool with theme switching, chart insights, route browsing, and natural language data import/export. Full Loom demo recorded. Team loved it — "great job guys" from Nizar, "Well done Hamza and team!" from Anton.</p>
-        <span class="feature-tag tag-green">Self-Initiated · Innovation</span>
-      </div>
-
-      <!-- Shipsta Integration -->
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🚚</div>
-        <h3>Shipsta Integration (Full-Stack)</h3>
-        <p>Led end-to-end integration: backend, frontend, external APIs, data pipelines, schema design. Managed ongoing communication and syncs with Shipsta team. Processing 200+ million records weekly with ~70% reduction in processing time. Manager feedback: "results were exceptional."</p>
-        <span class="feature-tag tag-cyan">Full-Stack · Data Ops</span>
-      </div>
-
-      <!-- MCP Pioneer -->
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(124, 58, 237, 0.12);">🚀</div>
-        <h3>MCP Pioneer</h3>
-        <p>Learned MCP from the ground up and built a working demo. Showcased to Etyen, Anton, and Zvi. Prototype set to become the backbone of generalized Freightos MCP infrastructure.</p>
-        <span class="feature-tag tag-purple">Innovation · Leadership</span>
-      </div>
-
-      <!-- Database Optimization -->
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(244, 63, 94, 0.12);">💾</div>
-        <h3>Database Optimization — 240GB → 40GB</h3>
-        <p>Slashed a single table from 240GB to under 40GB. Removed hundreds of GB of deprecated tables, improved performance, reduced complexity, introduced proper relations, increased standards, and streamlined data flow across the board.</p>
-        <span class="feature-tag tag-rose">Infrastructure · 83% Size Reduction</span>
+      <div class="carousel-track" id="projectsTrack">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(124, 58, 237, 0.12);">🧠</div>
+          <h3>Prediction Engine</h3>
+          <p>Built a complete AI-powered freight rate forecasting system from scratch. Airflow DAG → FastAPI backend → React frontend → ClickHouse storage. GPT-4 formula synthesis across 1,200+ route pairs for SPOT and CONTRACT rates. Iterated: V1 (35.7%) → V2 → V3 (76% accuracy).</p>
+          <span class="feature-tag tag-purple">AI/ML · Full-Stack</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">📊</div>
+          <h3>BM Similar — Feature Launch</h3>
+          <p>Launched a smarter benchmarking feature that unlocked insights for previously uncovered routes. Achieved +20% coverage increase with better customer experience. Includes Tango walkthrough for team enablement.</p>
+          <span class="feature-tag tag-cyan">Data Product · Shipped</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(245, 158, 11, 0.12);">📥</div>
+          <h3>Benchmark Export</h3>
+          <p>Full CSV/XLSX export pipeline — backend streaming, frontend download UX, with rate limiting and permission control. Anton called it: "Looks fantastic!! Thank you!"</p>
+          <span class="feature-tag tag-amber">Feature · Backend + Frontend</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(249, 115, 22, 0.12);">🔗</div>
+          <h3>External APIs Overhaul & Coverage API</h3>
+          <p>36 commits, 33 files, 767 insertions. Added comprehensive validation, air routes support, Coverage API (multi-audience: internal engineering, support team, customer-facing), caching strategy (24h TTL), error handling improvements, and "include_change" flag for price tracking.</p>
+          <span class="feature-tag tag-orange">36 commits · Infrastructure</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">🤖</div>
+          <h3>Terminal Copilot</h3>
+          <p>Self-initiated internal tool with theme switching, chart insights, route browsing, and natural language data import/export. Full Loom demo recorded. Team loved it — "great job guys" from Nizar, "Well done Hamza and team!" from Anton.</p>
+          <span class="feature-tag tag-green">Self-Initiated · Innovation</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🚚</div>
+          <h3>Shipsta Integration (Full-Stack)</h3>
+          <p>Led end-to-end integration: backend, frontend, external APIs, data pipelines, schema design. Managed ongoing communication and syncs with Shipsta team. Processing 200+ million records weekly with ~70% reduction in processing time. Manager feedback: "results were exceptional."</p>
+          <span class="feature-tag tag-cyan">Full-Stack · Data Ops</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(124, 58, 237, 0.12);">🚀</div>
+          <h3>MCP Pioneer</h3>
+          <p>Learned MCP from the ground up and built a working demo. Showcased to Etyen, Anton, and Zvi. Prototype set to become the backbone of generalized Freightos MCP infrastructure.</p>
+          <span class="feature-tag tag-purple">Innovation · Leadership</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(244, 63, 94, 0.12);">💾</div>
+          <h3>Database Optimization — 240GB → 40GB</h3>
+          <p>Slashed a single table from 240GB to under 40GB. Removed hundreds of GB of deprecated tables, improved performance, reduced complexity, introduced proper relations, increased standards, and streamlined data flow across the board.</p>
+          <span class="feature-tag tag-rose">Infrastructure · 83% Size Reduction</span>
+        </div>
       </div>
     </div>
 
@@ -2220,7 +2292,7 @@ footer .heart { color: var(--rose); }
 
       <div class="ownership-trust-quote">
         <p>"Whatever we throw Hamza's way, we don't have to look back to check. We just trust it will be delivered as best as it could be — with the highest accuracy possible."</p>
-        <span class="trust-source">— Abdallah Khalaf (Manager) & his manager, both independently</span>
+        <span class="trust-source">— Abdallah Khalaf (Manager) & Anton, both independently</span>
       </div>
     </div>
 
@@ -2331,15 +2403,17 @@ footer .heart { color: var(--rose); }
 
 <div class="section-divider"></div>
 
-<!-- ====================== TECH SKILLS ====================== -->
+<!-- ====================== TECH SKILLS (Collapsible) ====================== -->
 <section id="skills">
   <div class="section-inner">
-    <div class="reveal">
-      <span class="section-label">technical breadth</span>
-      <h2 class="section-title">Technologies & Tools</h2>
-      <p class="section-subtitle">The full-stack toolkit I use daily to ship at Freightos.</p>
-    </div>
+    <button class="tech-toggle" id="techToggleBtn" onclick="document.getElementById('techPanel').classList.toggle('open'); this.classList.toggle('open');">
+      <span class="tech-toggle-icon">🛠️</span>
+      <span class="tech-toggle-text">Technologies & Tools</span>
+      <span class="tech-toggle-hint">Tap to explore my stack</span>
+      <span class="tech-toggle-arrow">▾</span>
+    </button>
 
+    <div class="tech-panel" id="techPanel">
     <div class="tech-grid" id="techGrid">
       <div class="tech-item gsap-hidden">
         <div class="flip-inner">
@@ -2414,6 +2488,7 @@ footer .heart { color: var(--rose); }
         </div>
       </div>
     </div>
+    </div>
   </div>
 </section>
 
@@ -2428,31 +2503,37 @@ footer .heart { color: var(--rose); }
       <p class="section-subtitle">I don't just stay in my lane — I help wherever there's a need.</p>
     </div>
 
-    <div class="features-grid stagger-children">
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🔄</div>
-        <h3>Fusion Team</h3>
-        <p>Explained data architecture (price vs transit time sources), cache strategy (24h TTL, route-based), deployed fixes, planned B2B optimization.</p>
+    <div class="carousel-wrapper">
+      <div class="carousel-nav">
+        <button class="carousel-btn" onclick="document.getElementById('teamTrack').scrollBy({left:-360,behavior:'smooth'})">←</button>
+        <button class="carousel-btn" onclick="document.getElementById('teamTrack').scrollBy({left:360,behavior:'smooth'})">→</button>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">🚢</div>
-        <h3>Terminal Rate Ocean</h3>
-        <p>Added include_change API flag, coordinated ClickHouse testing with SRE approval, deployed hotfixes under pressure, proactive communication.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(249, 115, 22, 0.12);">🧪</div>
-        <h3>FBA Indexes & R&D</h3>
-        <p>Resolved missing files, deployed production fixes, managed customer permissions with Sjoerd.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(244, 63, 94, 0.12);">⚙️</div>
-        <h3>SRE & DevOps</h3>
-        <p>Jenkins troubleshooting, GKE chart deployments, ClickHouse migration testing.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon" style="background: rgba(245, 158, 11, 0.12);">🎟️</div>
-        <h3>Customer Escalations</h3>
-        <p>Resolved Zoho tickets, managed Daikin customer permissions, handled urgent report requests.</p>
+      <div class="carousel-track" id="teamTrack">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🔄</div>
+          <h3>Fusion Team</h3>
+          <p>Explained data architecture (price vs transit time sources), cache strategy (24h TTL, route-based), deployed fixes, planned B2B optimization.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">🚢</div>
+          <h3>Terminal Rate Ocean</h3>
+          <p>Added include_change API flag, coordinated ClickHouse testing with SRE approval, deployed hotfixes under pressure, proactive communication.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(249, 115, 22, 0.12);">🧪</div>
+          <h3>FBA Indexes & R&D</h3>
+          <p>Resolved missing files, deployed production fixes, managed customer permissions with Sjoerd.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(244, 63, 94, 0.12);">⚙️</div>
+          <h3>SRE & DevOps</h3>
+          <p>Jenkins troubleshooting, GKE chart deployments, ClickHouse migration testing.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background: rgba(245, 158, 11, 0.12);">🎟️</div>
+          <h3>Customer Escalations</h3>
+          <p>Resolved Zoho tickets, managed Daikin customer permissions, handled urgent report requests.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -2561,84 +2642,6 @@ footer .heart { color: var(--rose); }
       <div class="meme-emoji">💡</div>
       <div class="meme-title" style="color: var(--amber-light);">If I learn something that could help the team — I share it. Period.</div>
       <div class="meme-sub">New tool? I demo it. Better pattern? I propose it. Smarter architecture? I design it and document it. Leveling up isn't a solo sport.</div>
-    </div>
-  </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- ====================== MANAGER'S REVIEW ====================== -->
-<section id="manager" class="manager-review-section">
-  <div class="section-inner">
-    <div class="reveal">
-      <span class="section-label">straight from my manager</span>
-      <h2 class="section-title">What Abdallah Khalaf Says</h2>
-      <p class="section-subtitle">Direct quotes from my manager's official HiBob performance review — unedited, unfiltered.</p>
-      <div class="manager-badge">
-        <span class="manager-badge-dot"></span>
-        <span class="manager-badge-text">Verified HiBob Review — Abdallah Khalaf, Engineering Manager</span>
-      </div>
-    </div>
-
-    <div class="quotes-grid" id="quotesGrid" style="margin-top: 2rem;">
-      <div class="quote-card quote-highlight gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">Hamza was able to investigate and identify optimization opportunities and the results were exceptional.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-      <div class="quote-card quote-highlight gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">Hamza's contribution can be seen in all of our Repos and he can handle tasks end to end (BE, FE, Data) with more than 200 PRs.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-      <div class="quote-card quote-highlight gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">Hamza is the person to reach to review any new initiative — he will ask powerful questions about the design choices.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-      <div class="quote-card gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">Hamza is highly motivated to contribute and he goes beyond the scope of his ticket without delay in the timeline.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-      <div class="quote-card gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">He always spotlights issues and fixes them while working on his ticket.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-      <div class="quote-card gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">Hamza is doing exceptional in terms of team communication / documentation and updates.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-      <div class="quote-card gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">He is also documenting his work on Confluence so that it is clear for any new engineer to pick it up.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-      <div class="quote-card gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">Hamza ticket estimations is great — he is always committed to finish the tasks on time.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-      <div class="quote-card gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">There is a significant improvement in team communication from Hamza.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-      <div class="quote-card gsap-hidden">
-        <div class="quote-mark">"</div>
-        <div class="quote-text">Eager to learn new technologies.</div>
-        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
-      </div>
-    </div>
-
-    <!-- meme -->
-    <div class="meme-card reveal-scale">
-      <div class="meme-emoji">🚀</div>
-      <div class="meme-title">Reality Check:</div>
-      <div class="meme-sub">Manager says I'm "exceptional" at communication & optimization. My Git history says I have 200+ PRs.</div>
-      <div class="meme-footer">The data confirms the feedback.</div>
     </div>
   </div>
 </section>
@@ -2828,6 +2831,89 @@ footer .heart { color: var(--rose); }
       <div class="meme-emoji">💡</div>
       <div class="meme-title" style="color: var(--amber-light);">We didn't just participate — we brought the heat.</div>
       <div class="meme-sub">Teamed up with Abdallah, pitched 3 initiatives, built them out together, and walked away with 2nd place. That's what a solid partnership looks like.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== MANAGER'S REVIEW ====================== -->
+<section id="manager" class="manager-review-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">straight from my manager</span>
+      <h2 class="section-title">What Abdallah Khalaf Says</h2>
+      <p class="section-subtitle">Direct quotes from my manager's official HiBob performance review — unedited, unfiltered.</p>
+      <div class="manager-badge">
+        <span class="manager-badge-dot"></span>
+        <span class="manager-badge-text">Verified HiBob Review — Abdallah Khalaf, Engineering Manager</span>
+      </div>
+    </div>
+
+    <div class="carousel-wrapper" style="margin-top: 2rem;">
+      <div class="carousel-nav">
+        <button class="carousel-btn" onclick="document.getElementById('managerTrack').scrollBy({left:-380,behavior:'smooth'})">←</button>
+        <button class="carousel-btn" onclick="document.getElementById('managerTrack').scrollBy({left:380,behavior:'smooth'})">→</button>
+      </div>
+      <div class="carousel-track" id="managerTrack">
+        <div class="quote-card quote-highlight">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">Hamza was able to investigate and identify optimization opportunities and the results were exceptional.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+        <div class="quote-card quote-highlight">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">Hamza's contribution can be seen in all of our Repos and he can handle tasks end to end (BE, FE, Data) with more than 200 PRs.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+        <div class="quote-card quote-highlight">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">Hamza is the person to reach to review any new initiative — he will ask powerful questions about the design choices.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">Hamza is highly motivated to contribute and he goes beyond the scope of his ticket without delay in the timeline.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">He always spotlights issues and fixes them while working on his ticket.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">Hamza is doing exceptional in terms of team communication / documentation and updates.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">He is also documenting his work on Confluence so that it is clear for any new engineer to pick it up.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">Hamza ticket estimations is great — he is always committed to finish the tasks on time.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">There is a significant improvement in team communication from Hamza.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+        <div class="quote-card">
+          <div class="quote-mark">"</div>
+          <div class="quote-text">Eager to learn new technologies.</div>
+          <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="meme-card reveal-scale">
+      <div class="meme-emoji">🚀</div>
+      <div class="meme-title">Reality Check:</div>
+      <div class="meme-sub">Manager says I'm "exceptional" at communication & optimization. My Git history says I have 200+ PRs.</div>
+      <div class="meme-footer">The data confirms the feedback.</div>
     </div>
   </div>
 </section>
@@ -3025,46 +3111,27 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ===== GSAP + SCROLLTRIGGER =====
 gsap.registerPlugin(ScrollTrigger);
 
-// --- Tech Grid: stagger + bounce ---
-gsap.fromTo('#techGrid .tech-item',
-  {
-    opacity: 0,
-    y: 80,
-    scale: 0.5,
-    rotateX: 40,
-  },
-  {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    rotateX: 0,
-    duration: 0.8,
-    ease: 'back.out(1.7)',     // bounce overshoot
-    stagger: {
-      each: 0.1,
-      from: 'start',
-      grid: 'auto',
-    },
-    scrollTrigger: {
-      trigger: '#techGrid',
-      start: 'top 80%',
-      toggleActions: 'play none none none',
-    }
-  }
-);
-
-// After landing, activate icon bob animations
-ScrollTrigger.create({
-  trigger: '#techGrid',
-  start: 'top 80%',
-  onEnter: () => {
+// --- Tech Grid: animate on panel open ---
+let techAnimated = false;
+document.getElementById('techToggleBtn').addEventListener('click', () => {
+  if (!techAnimated) {
+    techAnimated = true;
     setTimeout(() => {
-      document.querySelectorAll('#techGrid .tech-item').forEach((item, i) => {
-        setTimeout(() => item.classList.add('animate-icons'), i * 100);
-      });
-    }, 1200);
-  },
-  once: true
+      gsap.fromTo('#techGrid .tech-item',
+        { opacity: 0, y: 50, scale: 0.5, rotateX: 40 },
+        {
+          opacity: 1, y: 0, scale: 1, rotateX: 0,
+          duration: 0.6, ease: 'back.out(1.7)',
+          stagger: { each: 0.06, from: 'start', grid: 'auto' }
+        }
+      );
+      setTimeout(() => {
+        document.querySelectorAll('#techGrid .tech-item').forEach((item, i) => {
+          setTimeout(() => item.classList.add('animate-icons'), i * 80);
+        });
+      }, 900);
+    }, 100);
+  }
 });
 
 // --- Stat Cards: pop-in with elastic ease ---
@@ -3085,72 +3152,43 @@ gsap.fromTo('.stat-card',
   }
 );
 
-// --- Feature Cards: stagger slide-up ---
-gsap.utils.toArray('.features-grid').forEach(grid => {
-  gsap.fromTo(grid.querySelectorAll('.feature-card'),
-    { opacity: 0, y: 60, rotateY: -8 },
+// --- Carousel Cards: stagger slide-in from right ---
+document.querySelectorAll('.carousel-track').forEach(track => {
+  gsap.fromTo(track.querySelectorAll('.feature-card'),
+    { opacity: 0, x: 80, scale: 0.9 },
     {
       opacity: 1,
-      y: 0,
-      rotateY: 0,
-      duration: 0.7,
+      x: 0,
+      scale: 1,
+      duration: 0.6,
       ease: 'back.out(1.4)',
-      stagger: 0.15,
+      stagger: 0.1,
       scrollTrigger: {
-        trigger: grid,
-        start: 'top 80%',
+        trigger: track,
+        start: 'top 85%',
         toggleActions: 'play none none none',
       }
     }
   );
 });
 
-// --- Quote Cards: identical to tech grid animation ---
-gsap.fromTo('#quotesGrid .quote-card',
-  {
-    opacity: 0,
-    y: 80,
-    scale: 0.5,
-    rotateX: 40,
-  },
+// --- Manager Quote Cards: carousel slide-in ---
+gsap.fromTo('#managerTrack .quote-card',
+  { opacity: 0, x: 80, scale: 0.9 },
   {
     opacity: 1,
-    y: 0,
+    x: 0,
     scale: 1,
-    rotateX: 0,
-    duration: 0.8,
-    ease: 'back.out(1.7)',
-    stagger: {
-      each: 0.1,
-      from: 'start',
-      grid: 'auto',
-    },
+    duration: 0.6,
+    ease: 'back.out(1.4)',
+    stagger: 0.1,
     scrollTrigger: {
-      trigger: '#quotesGrid',
-      start: 'top 80%',
+      trigger: '#managerTrack',
+      start: 'top 85%',
       toggleActions: 'play none none none',
     }
   }
 );
-
-// Highlighted quotes glow pulse
-ScrollTrigger.create({
-  trigger: '#quotesGrid',
-  start: 'top 80%',
-  once: true,
-  onEnter: () => {
-    setTimeout(() => {
-      document.querySelectorAll('.quote-highlight').forEach((card, i) => {
-        gsap.fromTo(card,
-          { boxShadow: '0 0 0 0 rgba(124, 58, 237, 0)' },
-          { boxShadow: '0 0 25px 4px rgba(124, 58, 237, 0.2)', duration: 0.8, delay: i * 0.2, ease: 'power2.out',
-            onComplete: () => { gsap.to(card, { boxShadow: '0 4px 20px rgba(124, 58, 237, 0.1)', duration: 1 }); }
-          }
-        );
-      });
-    }, 1200);
-  },
-});
 
 // Life Journey timeline stagger
 gsap.fromTo('.life-node',
@@ -3383,36 +3421,15 @@ gsap.fromTo('.timeline-item',
 
 
 
-// --- Role Comparison: slide in from sides ---
-gsap.fromTo('.role-box.then',
-  { opacity: 0, x: -60 },
-  {
-    opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
-    scrollTrigger: { trigger: '.role-comparison', start: 'top 80%', toggleActions: 'play none none none' }
-  }
-);
-gsap.fromTo('.role-box.now',
-  { opacity: 0, x: 60 },
-  {
-    opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
-    scrollTrigger: { trigger: '.role-comparison', start: 'top 80%', toggleActions: 'play none none none' }
-  }
-);
-gsap.fromTo('.role-arrow',
-  { opacity: 0, scale: 0 },
-  {
-    opacity: 1, scale: 1, duration: 0.5, delay: 0.4, ease: 'back.out(3)',
-    scrollTrigger: { trigger: '.role-comparison', start: 'top 80%', toggleActions: 'play none none none' }
-  }
-);
-
 // --- Hero entrance (non-scroll, on load) ---
 const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 heroTl
   .fromTo('.hero-badge', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6 })
   .fromTo('.hero h1', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, '-=0.3')
-  .fromTo('.hero .subtitle', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
-  .fromTo('.hero-cta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+  .fromTo('.hero .subtitle', { opacity: 0 }, { opacity: 1, duration: 0.3 }, '-=0.4')
+  .fromTo('.hero-tag', { opacity: 0, y: 15, scale: 0.8 }, { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: 'back.out(1.7)', stagger: 0.1 }, '-=0.2')
+  .fromTo('.hero-tag-dot', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(2)', stagger: 0.1 }, '-=1.5')
+  .fromTo('.hero-cta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.5')
   .fromTo('.scroll-indicator', { opacity: 0 }, { opacity: 1, duration: 0.8 }, '-=0.2');
 
 // ===== LEAFLET MAP =====
