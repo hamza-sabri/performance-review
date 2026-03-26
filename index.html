@@ -1,0 +1,3056 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hamza Sabri — Performance Review 2025-2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+/* ===== CSS RESET & VARIABLES ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg-primary: #000000;
+  --bg-secondary: #0a0a0f;
+  --bg-card: rgba(15, 15, 25, 0.6);
+  --bg-card-hover: rgba(25, 25, 45, 0.8);
+  --border-subtle: rgba(124, 58, 237, 0.15);
+  --border-hover: rgba(124, 58, 237, 0.4);
+
+  --purple: #7c3aed;
+  --purple-light: #a78bfa;
+  --purple-glow: rgba(124, 58, 237, 0.3);
+  --cyan: #06b6d4;
+  --cyan-light: #22d3ee;
+  --cyan-glow: rgba(6, 182, 212, 0.3);
+  --amber: #f59e0b;
+  --amber-light: #fbbf24;
+  --green: #10b981;
+  --green-light: #34d399;
+  --orange: #f97316;
+  --rose: #f43f5e;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== NOISE OVERLAY ===== */
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ===== GLOBAL GLOW CURSOR ===== */
+.cursor-glow {
+  position: fixed;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.07) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s;
+}
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 1rem 2rem;
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  background: rgba(0, 0, 0, 0.6);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: all 0.4s var(--ease-out-expo);
+}
+
+nav.scrolled {
+  padding: 0.6rem 2rem;
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--purple-light), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--purple);
+  transition: width 0.3s var(--ease-out-expo);
+}
+
+.nav-links a:hover { color: var(--text-primary); }
+.nav-links a:hover::after { width: 100%; }
+
+/* ===== HERO SECTION ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 6rem 2rem 4rem;
+  overflow: hidden;
+}
+
+.hero-bg-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124, 58, 237, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(245, 158, 11, 0.05) 0%, transparent 50%);
+  z-index: 0;
+}
+
+.hero-grid-lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(124, 58, 237, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(124, 58, 237, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 800px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 100px;
+  background: rgba(124, 58, 237, 0.1);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  font-size: 0.8rem;
+  color: var(--purple-light);
+  font-weight: 500;
+  margin-bottom: 2rem;
+  letter-spacing: 0.04em;
+}
+
+.hero-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { opacity: 0.8; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
+.hero h1 .gradient-text {
+  background: linear-gradient(135deg, var(--purple-light) 0%, var(--cyan) 50%, var(--amber-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
+  animation: gradient-shift 4s ease-in-out infinite alternate;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.hero .subtitle {
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+}
+
+.hero .subtitle strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s var(--ease-out-expo);
+  cursor: pointer;
+  border: none;
+  font-family: var(--font-sans);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple), #6d28d9);
+  color: white;
+  box-shadow: 0 4px 20px var(--purple-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.btn-ghost:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  background: rgba(124, 58, 237, 0.05);
+}
+
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  animation: float 3s ease-in-out infinite;
+}
+
+.scroll-indicator .line {
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(to bottom, var(--purple), transparent);
+  animation: scroll-line 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-8px); }
+}
+
+@keyframes scroll-line {
+  0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+  50% { opacity: 1; transform: scaleY(1); }
+  100% { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ===== SECTIONS ===== */
+section {
+  padding: 6rem 2rem;
+  position: relative;
+}
+
+.section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--purple-light);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.section-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--purple);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+}
+
+/* ===== STATS GRID ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 4rem;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.4s var(--ease-out-expo);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, transparent 40%, var(--purple-glow) 100%);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+}
+
+.stat-card:hover::before { opacity: 1; }
+
+.stat-number {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-card:nth-child(1) .stat-number { color: var(--purple-light); }
+.stat-card:nth-child(2) .stat-number { color: var(--cyan); }
+.stat-card:nth-child(3) .stat-number { color: var(--green-light); }
+.stat-card:nth-child(4) .stat-number { color: var(--amber-light); }
+.stat-card:nth-child(5) .stat-number { color: var(--orange); }
+.stat-card:nth-child(6) .stat-number { color: var(--rose); }
+
+/* ===== BAR CHART ===== */
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bar-label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  min-width: 150px;
+  text-align: right;
+}
+
+.bar-track {
+  flex: 1;
+  height: 32px;
+  background: rgba(124, 58, 237, 0.06);
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  width: 0;
+  transition: width 1.5s var(--ease-out-expo);
+}
+
+.bar-fill.animated { /* width set by JS */ }
+
+.bar-fill.purple { background: linear-gradient(90deg, var(--purple), #8b5cf6); }
+.bar-fill.cyan { background: linear-gradient(90deg, var(--cyan), #22d3ee); }
+.bar-fill.green { background: linear-gradient(90deg, #059669, var(--green-light)); }
+.bar-fill.amber { background: linear-gradient(90deg, #d97706, var(--amber-light)); }
+.bar-fill.orange { background: linear-gradient(90deg, #ea580c, var(--orange)); }
+
+/* ===== FEATURE CARDS ===== */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.feature-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.4s var(--ease-out-expo);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+}
+
+.feature-card:hover::before { opacity: 1; }
+
+.feature-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.feature-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.feature-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.feature-tag {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  margin-top: 1rem;
+  letter-spacing: 0.03em;
+}
+
+.tag-purple { background: rgba(124, 58, 237, 0.15); color: var(--purple-light); }
+.tag-cyan { background: rgba(6, 182, 212, 0.15); color: var(--cyan-light); }
+.tag-green { background: rgba(16, 185, 129, 0.15); color: var(--green-light); }
+.tag-amber { background: rgba(245, 158, 11, 0.15); color: var(--amber-light); }
+.tag-orange { background: rgba(249, 115, 22, 0.15); color: var(--orange); }
+
+/* ===== OWNERSHIP HERO CARD ===== */
+.ownership-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.06) 0%, rgba(6, 182, 212, 0.04) 50%, rgba(245, 158, 11, 0.06) 100%);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  border-radius: 24px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.ownership-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--purple), var(--cyan), var(--amber));
+}
+
+.ownership-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  pointer-events: none;
+  box-shadow: inset 0 0 60px rgba(124, 58, 237, 0.04);
+}
+
+.ownership-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.ownership-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(6, 182, 212, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  flex-shrink: 0;
+  animation: ownershipPulse 3s ease-in-out infinite;
+}
+
+@keyframes ownershipPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.15); }
+  50% { box-shadow: 0 0 20px 4px rgba(124, 58, 237, 0.12); }
+}
+
+.ownership-header-text h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 0.4rem;
+  background: linear-gradient(135deg, var(--purple-light), var(--cyan-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ownership-header-text p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.ownership-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.ownership-pillar {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(124, 58, 237, 0.12);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.ownership-pillar:hover {
+  background: rgba(124, 58, 237, 0.08);
+  border-color: rgba(124, 58, 237, 0.3);
+  transform: translateY(-2px);
+}
+
+.ownership-pillar-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.ownership-pillar-text {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.ownership-pillar-text span {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+.ownership-trust-quote {
+  background: rgba(245, 158, 11, 0.06);
+  border-left: 3px solid var(--amber);
+  border-radius: 0 12px 12px 0;
+  padding: 1.25rem 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.ownership-trust-quote p {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.ownership-trust-quote .trust-source {
+  font-size: 0.78rem;
+  color: var(--amber);
+  font-weight: 600;
+  font-style: normal;
+}
+
+@media (max-width: 768px) {
+  .ownership-pillars { grid-template-columns: repeat(2, 1fr); }
+  .ownership-header { flex-direction: column; }
+}
+.tag-rose { background: rgba(244, 63, 94, 0.15); color: var(--rose); }
+
+/* ===== TIMELINE ===== */
+.timeline {
+  position: relative;
+  padding-left: 2.5rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--purple), var(--cyan), var(--amber), var(--green));
+}
+
+.timeline-item {
+  position: relative;
+  padding-bottom: 2.5rem;
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -2.65rem;
+  top: 0.25rem;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--purple);
+  border: 2px solid var(--bg-primary);
+  box-shadow: 0 0 0 3px var(--purple-glow);
+}
+
+.timeline-item:nth-child(2)::before { background: var(--cyan); box-shadow: 0 0 0 3px var(--cyan-glow); }
+.timeline-item:nth-child(3)::before { background: var(--amber); box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3); }
+.timeline-item:nth-child(4)::before { background: var(--green); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3); }
+
+.timeline-date {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.timeline-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.timeline-desc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* ===== QUOTE CARDS (Manager Review) ===== */
+.manager-review-section {
+  position: relative;
+}
+
+.manager-review-section::before {
+  content: '';
+  position: absolute;
+  inset: -40px -60px;
+  background: radial-gradient(ellipse at center, rgba(124, 58, 237, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.manager-review-section .section-inner { position: relative; z-index: 1; }
+
+.manager-review-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.manager-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(6, 182, 212, 0.1));
+  border: 1px solid var(--border-hover);
+  border-radius: 100px;
+  padding: 0.5rem 1.2rem;
+  margin-top: 1rem;
+}
+
+.manager-badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulseDot 2s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+
+.manager-badge-text {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+}
+
+.quotes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.quote-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.5rem;
+  position: relative;
+  transition: all 0.4s var(--ease-out-expo);
+  overflow: hidden;
+}
+
+.quote-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--purple), var(--cyan));
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+.quote-card:hover::before { opacity: 1; }
+
+.quote-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.15), 0 0 0 1px rgba(124, 58, 237, 0.1);
+}
+
+.quote-card .quote-mark {
+  font-size: 2.5rem;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: Georgia, serif;
+  opacity: 0.7;
+}
+
+.quote-card .quote-text {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin: 0.5rem 0 1rem;
+  font-style: italic;
+}
+
+.quote-card .quote-author {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.quote-card .quote-author span { color: var(--cyan); }
+
+.quote-highlight .quote-text {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.quote-highlight {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(6, 182, 212, 0.04));
+  border-color: rgba(124, 58, 237, 0.3);
+}
+
+.quote-highlight::before { opacity: 1 !important; }
+
+/* ===== LIFE TIMELINE ===== */
+.life-timeline {
+  position: relative;
+  padding: 2rem 0;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.life-timeline-line {
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--purple) 0%, var(--cyan) 50%, var(--amber) 100%);
+  border-radius: 3px;
+  opacity: 0.4;
+}
+
+.life-node {
+  position: relative;
+  padding-left: 72px;
+  margin-bottom: 2.5rem;
+}
+
+.life-node:last-child { margin-bottom: 0; }
+
+.life-node-dot {
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 3px solid var(--purple);
+  background: var(--bg-primary);
+  z-index: 2;
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s;
+}
+
+.life-node-joy .life-node-dot { border-color: var(--green); box-shadow: 0 0 12px var(--green-light); }
+.life-node-hard .life-node-dot { border-color: var(--rose); box-shadow: 0 0 12px rgba(244, 63, 94, 0.4); }
+.life-node-win .life-node-dot { border-color: var(--amber); box-shadow: 0 0 12px rgba(245, 158, 11, 0.4); }
+
+.life-node:hover .life-node-dot { transform: scale(1.4); }
+
+.life-node-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 1.5rem;
+  transition: all 0.4s var(--ease-out-expo);
+  position: relative;
+}
+
+.life-node-joy .life-node-card { border-left: 3px solid var(--green); }
+.life-node-hard .life-node-card { border-left: 3px solid var(--rose); }
+.life-node-win .life-node-card { border-left: 3px solid var(--amber); }
+
+.life-node-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  box-shadow: 0 8px 30px rgba(124, 58, 237, 0.12);
+  transform: translateX(6px);
+}
+
+.life-node-emoji {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.life-node-date {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.life-node-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0.3rem 0 0.5rem;
+}
+
+.life-node-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ===== MEME CARDS ===== */
+.meme-card {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(6, 182, 212, 0.05));
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  border-radius: 20px;
+  padding: 3rem 2rem;
+  text-align: center;
+  margin: 3rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.meme-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(124, 58, 237, 0.05), transparent, rgba(6, 182, 212, 0.05), transparent);
+  animation: rotate-bg 15s linear infinite;
+}
+
+@keyframes rotate-bg {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.meme-card > * { position: relative; z-index: 1; }
+
+.meme-card .meme-emoji {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.meme-card .meme-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.meme-card .meme-sub {
+  color: var(--amber-light);
+  font-size: 1rem;
+}
+
+.meme-card .meme-footer {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+/* ===== TECH GRID ===== */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 1.2rem;
+}
+
+.tech-item {
+  perspective: 800px;
+  height: 130px;
+  will-change: transform, opacity;
+  cursor: pointer;
+}
+
+.tech-item .flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+}
+
+.tech-item:hover .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.tech-item .flip-front,
+.tech-item .flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.75rem;
+  text-align: center;
+}
+
+.tech-item .flip-front {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+}
+
+.tech-item .flip-back {
+  transform: rotateY(180deg);
+  border: 1px solid var(--border-hover);
+  overflow: hidden;
+}
+
+.tech-item .flip-back::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  border-radius: 14px;
+  z-index: 0;
+}
+
+.tech-item .flip-back .back-icon {
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
+  position: relative;
+  z-index: 1;
+  animation: backIconPulse 1.2s ease-in-out infinite;
+}
+
+.tech-item .flip-back .back-label {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+  letter-spacing: 0.03em;
+}
+
+.tech-item .flip-back .back-tagline {
+  font-size: 0.65rem;
+  margin-top: 0.3rem;
+  position: relative;
+  z-index: 1;
+  opacity: 0.8;
+}
+
+@keyframes backIconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
+.tech-item .tech-icon {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  transition: transform 0.4s var(--ease-spring);
+  animation: iconBob 3s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.tech-item.animate-icons .tech-icon {
+  animation-play-state: running;
+}
+
+@keyframes iconBob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-3px) rotate(-3deg); }
+  75% { transform: translateY(3px) rotate(3deg); }
+}
+
+.tech-item .tech-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+/* GSAP will handle initial hidden state */
+.tech-item.gsap-hidden,
+.quote-card.gsap-hidden {
+  opacity: 0;
+  transform: translateY(80px) scale(0.5);
+}
+
+/* ===== ROLE EVOLUTION ===== */
+.role-comparison {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin: 2rem 0;
+}
+
+.role-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.role-box h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.role-box ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.role-box ul li {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.role-box ul li::before {
+  content: '›';
+  position: absolute;
+  left: 0;
+  color: var(--text-muted);
+}
+
+.role-box.now { border-color: var(--cyan); }
+.role-box.now h3 { color: var(--cyan-light); }
+.role-box.now ul li::before { color: var(--cyan); }
+
+.role-arrow {
+  font-size: 2rem;
+  color: var(--purple);
+  animation: arrow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes arrow-pulse {
+  0%, 100% { transform: translateX(0); opacity: 0.6; }
+  50% { transform: translateX(6px); opacity: 1; }
+}
+
+/* ===== PROPOSAL SECTION ===== */
+.proposal-section {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.06), rgba(6, 182, 212, 0.04));
+  border-radius: 24px;
+  border: 1px solid rgba(124, 58, 237, 0.2);
+  padding: 3rem;
+  text-align: center;
+}
+
+.proposal-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.proposal-current {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.proposal-target span {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+.proposal-arrow {
+  font-size: 2rem;
+  color: var(--purple);
+}
+
+.proposal-target {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--green-light), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.proposal-target small {
+  display: block;
+  font-size: 1rem;
+  -webkit-text-fill-color: var(--green-light);
+  font-weight: 600;
+}
+
+.proposal-reasons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.proposal-reasons .reason {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.02);
+}
+
+.reason .check {
+  color: var(--green);
+  font-size: 1.1rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+.reason p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 3rem 2rem;
+  text-align: center;
+  border-top: 1px solid var(--border-subtle);
+}
+
+footer p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+footer .heart { color: var(--rose); }
+
+/* ===== SCROLL ANIMATIONS ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.8s var(--ease-out-expo), transform 0.8s var(--ease-out-expo);
+}
+
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* stagger children */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+}
+
+.stagger-children.visible > *:nth-child(1) { transition-delay: 0s; }
+.stagger-children.visible > *:nth-child(2) { transition-delay: 0.08s; }
+.stagger-children.visible > *:nth-child(3) { transition-delay: 0.16s; }
+.stagger-children.visible > *:nth-child(4) { transition-delay: 0.24s; }
+.stagger-children.visible > *:nth-child(5) { transition-delay: 0.32s; }
+.stagger-children.visible > *:nth-child(6) { transition-delay: 0.4s; }
+.stagger-children.visible > *:nth-child(7) { transition-delay: 0.48s; }
+.stagger-children.visible > *:nth-child(8) { transition-delay: 0.56s; }
+.stagger-children.visible > *:nth-child(9) { transition-delay: 0.64s; }
+.stagger-children.visible > *:nth-child(10) { transition-delay: 0.72s; }
+.stagger-children.visible > *:nth-child(11) { transition-delay: 0.8s; }
+.stagger-children.visible > *:nth-child(12) { transition-delay: 0.88s; }
+
+.stagger-children.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== DIVIDER ===== */
+.section-divider {
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+}
+
+/* ===== COUNTER ANIMATION ===== */
+.counter { display: inline-block; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: 1fr; }
+  .role-comparison { grid-template-columns: 1fr; text-align: center; }
+  .role-arrow { transform: rotate(90deg); }
+  .proposal-reasons { grid-template-columns: 1fr; }
+  .quotes-grid { grid-template-columns: 1fr; }
+  .bar-label { min-width: 100px; font-size: 0.7rem; }
+}
+
+/* ===== PARTICLE CANVAS ===== */
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* ===== INTERACTIVE MAP ===== */
+#regionMap {
+  width: 100%;
+  height: 500px;
+  border-radius: 20px;
+  border: 1px solid var(--border-subtle);
+  margin-top: 2rem;
+  z-index: 2;
+  position: relative;
+}
+
+.region-tooltip {
+  background: rgba(15, 15, 25, 0.95) !important;
+  border: 1px solid var(--purple) !important;
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-sans) !important;
+  box-shadow: 0 8px 32px rgba(124, 58, 237, 0.3) !important;
+  backdrop-filter: blur(10px);
+}
+
+.region-tooltip .tt-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.region-tooltip .tt-code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--purple-light);
+}
+
+.region-tooltip .tt-coords {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.leaflet-container { background: #0a0a1a !important; }
+
+/* ===== TILT CARD EFFECT ===== */
+.tilt-card {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.1s ease;
+}
+
+.tilt-card .tilt-inner {
+  transform: translateZ(20px);
+}
+
+/* ===== ANIMATED ICON HOVER ===== */
+.feature-icon {
+  transition: transform 0.4s var(--ease-spring), box-shadow 0.4s;
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.15) rotate(-8deg);
+  box-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+}
+
+/* ===== DONUT CHART ===== */
+.donut-container {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+}
+
+.donut-item {
+  text-align: center;
+}
+
+.donut-item svg {
+  width: 160px;
+  height: 160px;
+}
+
+.donut-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-top: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.donut-value {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+/* ===== SPARKLE ANIMATION ===== */
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--amber);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+/* ===== SECTION BG BLOBS ===== */
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.06;
+  pointer-events: none;
+}
+</style>
+</head>
+<body>
+
+<!-- Noise overlay -->
+<div class="noise-overlay"></div>
+
+<!-- Cursor glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Particle canvas -->
+<canvas id="particles"></canvas>
+
+<!-- Navigation -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">HS</div>
+    <ul class="nav-links">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#impact">Impact</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#manager">Manager</a></li>
+      <li><a href="#regions">Regions</a></li>
+      <li><a href="#proposal">Proposal</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ====================== HERO ====================== -->
+<section class="hero" id="hero">
+  <div class="hero-bg-gradient"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Performance Review — Sept 2025 to March 2026
+    </div>
+    <h1>
+      Hi, I'm <span class="gradient-text">Hamza Sabri</span>
+    </h1>
+    <p class="subtitle">
+      <strong>SDE Level II</strong> — from Data Analyst to <strong>Full-Stack & Data Engineer</strong> —
+      building prediction engines, shipping features end-to-end,
+      and driving impact across the <strong>Freightos Terminal Team</strong>.
+    </p>
+    <div class="hero-cta">
+      <a href="#impact" class="btn btn-primary">See the Numbers ↓</a>
+      <a href="#proposal" class="btn btn-ghost">Jump to Proposal</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="line"></div>
+  </div>
+</section>
+
+<!-- ====================== IMPACT AT A GLANCE ====================== -->
+<section id="impact">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">the numbers</span>
+      <h2 class="section-title">Impact at a Glance</h2>
+      <p class="section-subtitle">6 months of relentless building, shipping, and iterating — across 6 repositories.</p>
+    </div>
+
+    <div class="stats-grid stagger-children">
+      <div class="stat-card">
+        <div class="stat-number counter" data-target="618">0</div>
+        <div class="stat-label">Total Commits</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><span class="counter" data-target="25620">0</span>+</div>
+        <div class="stat-label">Lines of Code</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><span class="counter" data-target="76">0</span>%</div>
+        <div class="stat-label">Prediction Accuracy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">+<span class="counter" data-target="20">0</span>%</div>
+        <div class="stat-label">Coverage via BM Similar</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><span class="counter" data-target="200">0</span>+</div>
+        <div class="stat-label">Pull Requests</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number"><span class="counter" data-target="5">0</span>+</div>
+        <div class="stat-label">Major Features Shipped</div>
+      </div>
+    </div>
+
+    <!-- Bar Chart -->
+    <div class="reveal">
+      <h3 style="font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--text-secondary);">Git Activity by Repository</h3>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <span class="bar-label">fd-backend</span>
+          <div class="bar-track">
+            <div class="bar-fill purple" data-width="90" data-value="360">360</div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">data-products</span>
+          <div class="bar-track">
+            <div class="bar-fill cyan" data-width="41" data-value="162">162</div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">fd-frontend</span>
+          <div class="bar-track">
+            <div class="bar-fill green" data-width="15" data-value="58">58</div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">external-apis</span>
+          <div class="bar-track">
+            <div class="bar-fill amber" data-width="9" data-value="36">36</div>
+          </div>
+        </div>
+        <div class="bar-row">
+          <span class="bar-label">mgmt-tools</span>
+          <div class="bar-track">
+            <div class="bar-fill orange" data-width="3" data-value="12">12</div>
+          </div>
+        </div>
+      </div>
+      <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem;">748 files changed · 25,620 insertions · 6 repositories</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== ROLE EVOLUTION ====================== -->
+<section id="evolution">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">growth</span>
+      <h2 class="section-title">Role Evolution</h2>
+      <p class="section-subtitle">This transition happened organically — by delivering increasingly complex work.</p>
+    </div>
+
+    <div class="role-comparison reveal-scale">
+      <div class="role-box then">
+        <h3 style="color: var(--text-muted);">Then: Data Analyst</h3>
+        <ul>
+          <li>SQL queries & reporting</li>
+          <li>Basic scripting</li>
+          <li>Limited scope</li>
+          <li>Task execution</li>
+        </ul>
+      </div>
+      <div class="role-arrow">→</div>
+      <div class="role-box now">
+        <h3>Now: Full-Stack & Data Engineer</h3>
+        <ul>
+          <li>Airflow DAGs & ETL pipelines</li>
+          <li>FastAPI backends (8+ endpoints)</li>
+          <li>React frontends (Recharts, heatmaps)</li>
+          <li>ClickHouse schemas & Redis caching</li>
+          <li>GKE deployments & DevOps</li>
+          <li>AI/ML pipelines with GPT-4</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- meme -->
+    <div class="meme-card reveal-scale">
+      <div class="meme-emoji">😎</div>
+      <div class="meme-title">My Slack title still says "Data Analyst"</div>
+      <div class="meme-sub">My git history disagrees.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== PROJECTS ====================== -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">projects</span>
+      <h2 class="section-title">What I Built</h2>
+      <p class="section-subtitle">End-to-end ownership of major features — from architecture design to production deployment.</p>
+    </div>
+
+    <div class="features-grid stagger-children">
+      <!-- Prediction Engine -->
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(124, 58, 237, 0.12);">🧠</div>
+        <h3>Prediction Engine</h3>
+        <p>Built a complete AI-powered freight rate forecasting system from scratch. Airflow DAG → FastAPI backend → React frontend → ClickHouse storage. GPT-4 formula synthesis across 1,200+ route pairs for SPOT and CONTRACT rates. Iterated: V1 (35.7%) → V2 → V3 (76% accuracy).</p>
+        <span class="feature-tag tag-purple">AI/ML · Full-Stack</span>
+      </div>
+
+      <!-- BM Similar -->
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">📊</div>
+        <h3>BM Similar — Feature Launch</h3>
+        <p>Launched a smarter benchmarking feature that unlocked insights for previously uncovered routes. Achieved +20% coverage increase with better customer experience. Includes Tango walkthrough for team enablement.</p>
+        <span class="feature-tag tag-cyan">Data Product · Shipped</span>
+      </div>
+
+      <!-- Benchmark Export -->
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(245, 158, 11, 0.12);">📥</div>
+        <h3>Benchmark Export</h3>
+        <p>Full CSV/XLSX export pipeline — backend streaming, frontend download UX, with rate limiting and permission control. Anton called it: "Looks fantastic!! Thank you!"</p>
+        <span class="feature-tag tag-amber">Feature · Backend + Frontend</span>
+      </div>
+
+      <!-- External APIs -->
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(249, 115, 22, 0.12);">🔗</div>
+        <h3>External APIs Overhaul & Coverage API</h3>
+        <p>36 commits, 33 files, 767 insertions. Added comprehensive validation, air routes support, Coverage API (multi-audience: internal engineering, support team, customer-facing), caching strategy (24h TTL), error handling improvements, and "include_change" flag for price tracking.</p>
+        <span class="feature-tag tag-orange">36 commits · Infrastructure</span>
+      </div>
+
+      <!-- Terminal Copilot -->
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">🤖</div>
+        <h3>Terminal Copilot</h3>
+        <p>Self-initiated internal tool with theme switching, chart insights, route browsing, and natural language data import/export. Full Loom demo recorded. Team loved it — "great job guys" from Nizar, "Well done Hamza and team!" from Anton.</p>
+        <span class="feature-tag tag-green">Self-Initiated · Innovation</span>
+      </div>
+
+      <!-- Shipsta Integration -->
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🚚</div>
+        <h3>Shipsta Integration (Full-Stack)</h3>
+        <p>Led end-to-end integration: backend, frontend, external APIs, data pipelines, schema design. Managed ongoing communication and syncs with Shipsta team. Processing 200+ million records weekly with ~70% reduction in processing time. Manager feedback: "results were exceptional."</p>
+        <span class="feature-tag tag-cyan">Full-Stack · Data Ops</span>
+      </div>
+
+      <!-- MCP Pioneer -->
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(124, 58, 237, 0.12);">🚀</div>
+        <h3>MCP Pioneer</h3>
+        <p>Learned MCP from the ground up and built a working demo. Showcased to Etyen, Anton, and Zvi. Prototype set to become the backbone of generalized Freightos MCP infrastructure.</p>
+        <span class="feature-tag tag-purple">Innovation · Leadership</span>
+      </div>
+
+      <!-- Database Optimization -->
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(244, 63, 94, 0.12);">💾</div>
+        <h3>Database Optimization — 240GB → 40GB</h3>
+        <p>Slashed a single table from 240GB to under 40GB. Removed hundreds of GB of deprecated tables, improved performance, reduced complexity, introduced proper relations, increased standards, and streamlined data flow across the board.</p>
+        <span class="feature-tag tag-rose">Infrastructure · 83% Size Reduction</span>
+      </div>
+    </div>
+
+    <!-- meme -->
+    <div class="meme-card reveal-scale">
+      <div class="meme-emoji">🐛</div>
+      <div class="meme-title">GPT-4 at 3am: "I predict a +184% price jump"</div>
+      <div class="meme-sub">Me: "That's not how freight works."</div>
+      <div class="meme-footer">— actual bug I fixed</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== INFRASTRUCTURE ====================== -->
+<section>
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">infrastructure</span>
+      <h2 class="section-title">Under the Hood</h2>
+      <p class="section-subtitle">Beyond features — the foundational work that keeps systems reliable.</p>
+    </div>
+
+    <!-- Full Ownership Card -->
+    <div class="ownership-card reveal-scale">
+      <div class="ownership-header">
+        <div class="ownership-icon-wrap">🎯</div>
+        <div class="ownership-header-text">
+          <h3>Full Ownership, A to Z</h3>
+          <p>I don't just write code — I design, document, build, optimize, and ship every piece of the puzzle. Every ticket I pick up gets the full treatment: from Jira card design to production deployment, with documentation at every step.</p>
+        </div>
+      </div>
+
+      <div class="ownership-pillars">
+        <div class="ownership-pillar">
+          <span class="ownership-pillar-icon">📝</span>
+          <div class="ownership-pillar-text">Ticket Design<span>I write my own Jira cards with full specs</span></div>
+        </div>
+        <div class="ownership-pillar">
+          <span class="ownership-pillar-icon">📖</span>
+          <div class="ownership-pillar-text">Confluence Docs<span>Every feature fully documented</span></div>
+        </div>
+        <div class="ownership-pillar">
+          <span class="ownership-pillar-icon">🗄️</span>
+          <div class="ownership-pillar-text">Database Design<span>Schema, migrations, data modeling</span></div>
+        </div>
+        <div class="ownership-pillar">
+          <span class="ownership-pillar-icon">⚡</span>
+          <div class="ownership-pillar-text">Indexing & Optimization<span>Query tuning, 240GB → 40GB</span></div>
+        </div>
+        <div class="ownership-pillar">
+          <span class="ownership-pillar-icon">🖥️</span>
+          <div class="ownership-pillar-text">Frontend<span>React dashboards & UI components</span></div>
+        </div>
+        <div class="ownership-pillar">
+          <span class="ownership-pillar-icon">⚙️</span>
+          <div class="ownership-pillar-text">Backend<span>FastAPI services, business logic</span></div>
+        </div>
+        <div class="ownership-pillar">
+          <span class="ownership-pillar-icon">🔗</span>
+          <div class="ownership-pillar-text">External APIs<span>Shipsta, Coverage, integrations</span></div>
+        </div>
+        <div class="ownership-pillar">
+          <span class="ownership-pillar-icon">📋</span>
+          <div class="ownership-pillar-text">API Documentation<span>Swagger, contracts, validation</span></div>
+        </div>
+        <div class="ownership-pillar">
+          <span class="ownership-pillar-icon">🔄</span>
+          <div class="ownership-pillar-text">ETL Pipelines<span>Airflow DAGs, data transforms</span></div>
+        </div>
+      </div>
+
+      <div class="ownership-trust-quote">
+        <p>"Whatever we throw Hamza's way, we don't have to look back to check. We just trust it will be delivered as best as it could be — with the highest accuracy possible."</p>
+        <span class="trust-source">— Abdallah Khalaf (Manager) & his manager, both independently</span>
+      </div>
+    </div>
+
+    <div class="features-grid stagger-children">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🗄️</div>
+        <h3>MySQL → ClickHouse Migration</h3>
+        <p>Led full migration of Ocean & Air data. Rearchitected schemas for columnar storage and compression. Ran thorough validation (zero data loss), coordinated downstream consumers. Delivered noticeably faster queries and a scalable data layer.</p>
+        <span class="feature-tag tag-cyan">Database · Schema Design</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(124, 58, 237, 0.12);">🔐</div>
+        <h3>Forecast Permissions Audit</h3>
+        <p>Cross-repo audit across 4 repositories, 50+ files end-to-end (fd-backend, fd-frontend, fd-terminal-management-backend, fd-terminal-management-frontend). Found and fixed 2 critical issues: missing watcher + missing dropdown.</p>
+        <span class="feature-tag tag-purple">Security · 4 Repos</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(245, 158, 11, 0.12);">✅</div>
+        <h3>API Validation Hardening</h3>
+        <p>Comprehensive input validation across all External API endpoints. 30+ commits to ensure nobody can break the system — not even with emojis as port names.</p>
+        <span class="feature-tag tag-amber">Reliability · 30+ commits</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">📡</div>
+        <h3>Proactive Monitoring</h3>
+        <p>Built Slack notification streams for outlier detection, report health, backfill tracking, and data inconsistencies. Shifted the team from reactive to proactive — catching issues before customers noticed.</p>
+        <span class="feature-tag tag-green">Observability · Slack Streams</span>
+      </div>
+    </div>
+
+    <!-- meme -->
+    <div class="meme-card reveal-scale">
+      <div class="meme-emoji">🛡️</div>
+      <div class="meme-title">Me adding validation to the External APIs:</div>
+      <div class="meme-sub">"What if someone sends an emoji as a port name?"</div>
+      <div class="meme-footer">30+ commits later: nobody can break it anymore</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== PERFORMANCE WINS ====================== -->
+<section>
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">performance</span>
+      <h2 class="section-title">Performance Wins</h2>
+      <p class="section-subtitle">Numbers that speak louder than words.</p>
+    </div>
+
+    <div class="donut-container" id="donutContainer">
+      <div class="donut-item">
+        <svg viewBox="0 0 150 150">
+          <circle cx="75" cy="75" r="60" fill="none" stroke="rgba(124,58,237,0.15)" stroke-width="10"/>
+          <circle class="donut-ring" cx="75" cy="75" r="60" fill="none" stroke="var(--purple)" stroke-width="10"
+            stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"
+            transform="rotate(-90 75 75)" data-target="373" data-circumference="377"/>
+          <text x="75" y="70" text-anchor="middle" fill="var(--purple-light)" font-family="Space Grotesk" font-size="17" font-weight="800">16s →</text>
+          <text x="75" y="92" text-anchor="middle" fill="var(--text-primary)" font-family="Space Grotesk" font-size="20" font-weight="800">100ms</text>
+        </svg>
+        <div class="donut-label">API Response Time</div>
+      </div>
+      <div class="donut-item">
+        <svg viewBox="0 0 150 150">
+          <circle cx="75" cy="75" r="60" fill="none" stroke="rgba(6,182,212,0.15)" stroke-width="10"/>
+          <circle class="donut-ring" cx="75" cy="75" r="60" fill="none" stroke="var(--cyan)" stroke-width="10"
+            stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"
+            transform="rotate(-90 75 75)" data-target="314" data-circumference="377"/>
+          <text x="75" y="70" text-anchor="middle" fill="var(--cyan-light)" font-family="Space Grotesk" font-size="17" font-weight="800">240GB →</text>
+          <text x="75" y="92" text-anchor="middle" fill="var(--text-primary)" font-family="Space Grotesk" font-size="20" font-weight="800">40GB</text>
+        </svg>
+        <div class="donut-label">Database Size</div>
+      </div>
+      <div class="donut-item">
+        <svg viewBox="0 0 150 150">
+          <circle cx="75" cy="75" r="60" fill="none" stroke="rgba(16,185,129,0.15)" stroke-width="10"/>
+          <circle class="donut-ring" cx="75" cy="75" r="60" fill="none" stroke="var(--green)" stroke-width="10"
+            stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"
+            transform="rotate(-90 75 75)" data-target="260" data-circumference="377"/>
+          <text x="75" y="70" text-anchor="middle" fill="var(--green-light)" font-family="Space Grotesk" font-size="17" font-weight="800">6 DAGs →</text>
+          <text x="75" y="92" text-anchor="middle" fill="var(--text-primary)" font-family="Space Grotesk" font-size="22" font-weight="800">2</text>
+        </svg>
+        <div class="donut-label">Pipeline Consolidation</div>
+      </div>
+      <div class="donut-item">
+        <svg viewBox="0 0 150 150">
+          <circle cx="75" cy="75" r="60" fill="none" stroke="rgba(245,158,11,0.15)" stroke-width="10"/>
+          <circle class="donut-ring" cx="75" cy="75" r="60" fill="none" stroke="var(--amber)" stroke-width="10"
+            stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round"
+            transform="rotate(-90 75 75)" data-target="264" data-circumference="377"/>
+          <text x="75" y="72" text-anchor="middle" fill="var(--amber-light)" font-family="Space Grotesk" font-size="22" font-weight="800">-70%</text>
+          <text x="75" y="90" text-anchor="middle" fill="var(--text-primary)" font-family="Space Grotesk" font-size="11" font-weight="700">Processing Time</text>
+        </svg>
+        <div class="donut-label">Shipsta ETL</div>
+      </div>
+    </div>
+
+    <!-- Redis callout -->
+    <div class="meme-card reveal-scale">
+      <div class="meme-emoji">⚡</div>
+      <div class="meme-title">Introduced Redis across the board</div>
+      <div class="meme-sub">Time Stats · Rate Stats · Benchmark Similar · Coverage API</div>
+      <div class="meme-footer">Because every millisecond matters in freight</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== TECH SKILLS ====================== -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">technical breadth</span>
+      <h2 class="section-title">Technologies & Tools</h2>
+      <p class="section-subtitle">The full-stack toolkit I use daily to ship at Freightos.</p>
+    </div>
+
+    <div class="tech-grid" id="techGrid">
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">🐍</span><span class="tech-name">Python</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #306998, #1a3a52);"><span class="back-icon">🐍</span><span class="back-label">Python</span><span class="back-tagline">Core language</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">🌀</span><span class="tech-name">Airflow</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #017cee, #00395e);"><span class="back-icon">🌀</span><span class="back-label">Airflow</span><span class="back-tagline">6 DAGs → 2</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">⚡</span><span class="tech-name">FastAPI</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #009688, #004d40);"><span class="back-icon">⚡</span><span class="back-label">FastAPI</span><span class="back-tagline">REST & async</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">⚛️</span><span class="tech-name">React</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #61dafb, #1a2744);"><span class="back-icon">⚛️</span><span class="back-label">React</span><span class="back-tagline">Dashboards & UI</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">🗄️</span><span class="tech-name">ClickHouse</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #fadb14, #5c4a00);"><span class="back-icon">🗄️</span><span class="back-label">ClickHouse</span><span class="back-tagline">OLAP analytics</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">🐬</span><span class="tech-name">MySQL</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #00758f, #003545);"><span class="back-icon">🐬</span><span class="back-label">MySQL</span><span class="back-tagline">240GB → 40GB</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">🔴</span><span class="tech-name">Redis</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #dc382d, #5c1510);"><span class="back-icon">🔴</span><span class="back-label">Redis</span><span class="back-tagline">Cache layer</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">🤖</span><span class="tech-name">GPT-4</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #10a37f, #0a5c48);"><span class="back-icon">🤖</span><span class="back-label">GPT-4</span><span class="back-tagline">MCP pioneer</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">☸️</span><span class="tech-name">GKE / K8s</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #326ce5, #152a5c);"><span class="back-icon">☸️</span><span class="back-label">GKE / K8s</span><span class="back-tagline">Cloud infra</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">📊</span><span class="tech-name">Recharts</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #8884d8, #3a3670);"><span class="back-icon">📊</span><span class="back-label">Recharts</span><span class="back-tagline">Data viz</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">🔀</span><span class="tech-name">Git</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #f05032, #5c1e13);"><span class="back-icon">🔀</span><span class="back-label">Git</span><span class="back-tagline">200+ PRs</span></div>
+        </div>
+      </div>
+      <div class="tech-item gsap-hidden">
+        <div class="flip-inner">
+          <div class="flip-front"><span class="tech-icon">🐳</span><span class="tech-name">Docker</span></div>
+          <div class="flip-back" style="background: linear-gradient(135deg, #2496ed, #0e3d5c);"><span class="back-icon">🐳</span><span class="back-label">Docker</span><span class="back-tagline">Containers</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== CROSS-TEAM IMPACT ====================== -->
+<section id="team">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">cross-team</span>
+      <h2 class="section-title">Impact Beyond My Team</h2>
+      <p class="section-subtitle">I don't just stay in my lane — I help wherever there's a need.</p>
+    </div>
+
+    <div class="features-grid stagger-children">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🔄</div>
+        <h3>Fusion Team</h3>
+        <p>Explained data architecture (price vs transit time sources), cache strategy (24h TTL, route-based), deployed fixes, planned B2B optimization.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">🚢</div>
+        <h3>Terminal Rate Ocean</h3>
+        <p>Added include_change API flag, coordinated ClickHouse testing with SRE approval, deployed hotfixes under pressure, proactive communication.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(249, 115, 22, 0.12);">🧪</div>
+        <h3>FBA Indexes & R&D</h3>
+        <p>Resolved missing files, deployed production fixes, managed customer permissions with Sjoerd.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(244, 63, 94, 0.12);">⚙️</div>
+        <h3>SRE & DevOps</h3>
+        <p>Jenkins troubleshooting, GKE chart deployments, ClickHouse migration testing.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(245, 158, 11, 0.12);">🎟️</div>
+        <h3>Customer Escalations</h3>
+        <p>Resolved Zoho tickets, managed Daikin customer permissions, handled urgent report requests.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== MANAGER'S REVIEW ====================== -->
+<section id="manager" class="manager-review-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">straight from my manager</span>
+      <h2 class="section-title">What Abdallah Khalaf Says</h2>
+      <p class="section-subtitle">Direct quotes from my manager's official HiBob performance review — unedited, unfiltered.</p>
+      <div class="manager-badge">
+        <span class="manager-badge-dot"></span>
+        <span class="manager-badge-text">Verified HiBob Review — Abdallah Khalaf, Engineering Manager</span>
+      </div>
+    </div>
+
+    <div class="quotes-grid" id="quotesGrid" style="margin-top: 2rem;">
+      <div class="quote-card quote-highlight gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Hamza was able to investigate and identify optimization opportunities and the results were exceptional.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+      <div class="quote-card quote-highlight gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Hamza's contribution can be seen in all of our Repos and he can handle tasks end to end (BE, FE, Data) with more than 200 PRs.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+      <div class="quote-card quote-highlight gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Hamza is the person to reach to review any new initiative — he will ask powerful questions about the design choices.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+      <div class="quote-card gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Hamza is highly motivated to contribute and he goes beyond the scope of his ticket without delay in the timeline.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+      <div class="quote-card gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">He always spotlights issues and fixes them while working on his ticket.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+      <div class="quote-card gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Hamza is doing exceptional in terms of team communication / documentation and updates.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+      <div class="quote-card gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">He is also documenting his work on Confluence so that it is clear for any new engineer to pick it up.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+      <div class="quote-card gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Hamza ticket estimations is great — he is always committed to finish the tasks on time.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+      <div class="quote-card gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">There is a significant improvement in team communication from Hamza.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+      <div class="quote-card gsap-hidden">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">Eager to learn new technologies.</div>
+        <div class="quote-author">— Abdallah Khalaf, <span>Engineering Manager</span></div>
+      </div>
+    </div>
+
+    <!-- meme -->
+    <div class="meme-card reveal-scale">
+      <div class="meme-emoji">🚀</div>
+      <div class="meme-title">Reality Check:</div>
+      <div class="meme-sub">Manager says I'm "exceptional" at communication & optimization. My Git history says I have 200+ PRs.</div>
+      <div class="meme-footer">The data confirms the feedback.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== LIFE JOURNEY ====================== -->
+<section id="life-journey">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">the human behind the code</span>
+      <h2 class="section-title">Life Happened. I Shipped Anyway.</h2>
+      <p class="section-subtitle">2025 wasn't just a year of engineering milestones — it was the most transformative year of my life. Through every challenge and every joy, I never missed a deadline.</p>
+    </div>
+
+    <div class="life-timeline">
+      <div class="life-timeline-line"></div>
+
+      <div class="life-node life-node-joy reveal-scale" data-date="Early 2025">
+        <div class="life-node-dot"></div>
+        <div class="life-node-card">
+          <span class="life-node-emoji">💍</span>
+          <span class="life-node-date">Early 2025</span>
+          <h4 class="life-node-title">Got Married</h4>
+          <p class="life-node-desc">Started a new chapter. Balanced wedding planning with sprint planning — and nailed both.</p>
+        </div>
+      </div>
+
+      <div class="life-node life-node-hard reveal-scale" data-date="Mid 2025">
+        <div class="life-node-dot"></div>
+        <div class="life-node-card">
+          <span class="life-node-emoji">🏥</span>
+          <span class="life-node-date">Mid 2025</span>
+          <h4 class="life-node-title">Father's Car Accident</h4>
+          <p class="life-node-desc">A serious accident requiring major surgery. Hospital visits, emotional weight, sleepless nights — and I still showed up every day, shipped every feature on time.</p>
+        </div>
+      </div>
+
+      <div class="life-node life-node-joy reveal-scale" data-date="Oct 9, 2025">
+        <div class="life-node-dot"></div>
+        <div class="life-node-card">
+          <span class="life-node-emoji">👶</span>
+          <span class="life-node-date">October 9, 2025</span>
+          <h4 class="life-node-title">First Son Born</h4>
+          <p class="life-node-desc">The best day of my life. Became a father — and found a whole new reason to push harder, grow faster, and build a better future.</p>
+        </div>
+      </div>
+
+      <div class="life-node life-node-win reveal-scale" data-date="2025">
+        <div class="life-node-dot"></div>
+        <div class="life-node-card">
+          <span class="life-node-emoji">🚀</span>
+          <span class="life-node-date">Throughout 2025</span>
+          <h4 class="life-node-title">Zero Missed Deadlines</h4>
+          <p class="life-node-desc">Shipsta integration, My Route optimization, Benchmark overhaul, ClickHouse migration, Coverage API, MCP Pioneer — every single one delivered on time. 200+ PRs merged.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="life-closing reveal" style="text-align: center; margin-top: 3rem;">
+      <p style="font-size: 1.3rem; color: var(--amber); font-family: var(--font-display); font-weight: 700; font-style: italic;">"When life gets harder, I don't slow down — I level up."</p>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.75rem;">Husband. Father. Engineer. All at 100%.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== INTERACTIVE REGIONS MAP ====================== -->
+<section id="regions">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">data innovation</span>
+      <h2 class="section-title">Interactive Regions & Similar Routes</h2>
+      <p class="section-subtitle">Built ocean & air region definitions and similar route matching — which my manager said are now "more accurate than even the real prices we have."</p>
+    </div>
+
+    <div class="features-grid stagger-children" style="margin-bottom: 2rem;">
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(6, 182, 212, 0.12);">🗺️</div>
+        <h3>18 Global Regions Defined</h3>
+        <p>Created comprehensive region definitions for Ocean and Air freight covering every major trade zone — from Gulf Area to Oceania, Americas to Asia. Each region with precise lat/lng bounding boxes.</p>
+        <span class="feature-tag tag-cyan">Data Architecture</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background: rgba(16, 185, 129, 0.12);">🔄</div>
+        <h3>Similar Routes Algorithm</h3>
+        <p>Built the matching engine that finds relevant benchmark comparisons for any route. Manager feedback: results are "more accurate than even the real prices we have" — now a core product differentiator.</p>
+        <span class="feature-tag tag-green">Algorithm · Production</span>
+      </div>
+    </div>
+
+    <div class="reveal-scale">
+      <div id="regionMap"></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== KAIZEN / GROWTH ====================== -->
+<section>
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">philosophy</span>
+      <h2 class="section-title">Kaizen (改善) — Continuous Improvement</h2>
+      <p class="section-subtitle">Small daily improvements compound into extraordinary progress.</p>
+    </div>
+
+    <div class="meme-card reveal-scale" style="margin-top: 0;">
+      <div style="font-family: var(--font-display); font-size: 2.5rem; font-weight: 800; color: var(--cyan-light);">1.01<sup style="font-size: 1.2rem;">365</sup> = 37.78</div>
+      <div class="meme-footer" style="margin-top: 0.5rem;">Small daily improvements compound into extraordinary progress</div>
+    </div>
+
+    <div class="timeline reveal-left" style="margin-top: 3rem;">
+      <div class="timeline-item">
+        <div class="timeline-date">Sept – Oct 2025</div>
+        <div class="timeline-title">Prediction Engine V1</div>
+        <div class="timeline-desc">First iteration — 35.7% accuracy. Built the pipeline, learned GPT-4 integration, established the architecture pattern.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Nov – Dec 2025</div>
+        <div class="timeline-title">Prediction V2 → V3 + BM Similar Launch</div>
+        <div class="timeline-desc">Iterated to 76% accuracy. Shipped BM Similar with +20% coverage. External APIs overhaul (36 commits).</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">Jan – Feb 2026</div>
+        <div class="timeline-title">Infrastructure & Cross-Team</div>
+        <div class="timeline-desc">ClickHouse migration, permissions audit across 4 repos, Terminal Copilot demo, Fusion team collaboration.</div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">March 2026</div>
+        <div class="timeline-title">VPS Proposal + Continued Delivery</div>
+        <div class="timeline-desc">Self-initiated VPS cost optimization research. Continued shipping features and resolving cross-team issues. Full 2FA side project (Django + Next.js).</div>
+      </div>
+    </div>
+
+    <!-- meme -->
+    <div class="meme-card reveal-scale">
+      <div class="meme-emoji">🚀</div>
+      <div class="meme-title" style="font-size: 1.3rem; color: var(--cyan-light);">6 months ago: "I'm a Data Analyst"</div>
+      <div class="meme-sub" style="font-size: 0.95rem;">Today: *deploys AI prediction engine, audits 4 repos, proposes VPS migration, builds a copilot on the side*</div>
+      <div class="meme-footer" style="color: var(--amber);">Kaizen hits different</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ====================== THE PROPOSAL ====================== -->
+<section id="proposal">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">the proposal</span>
+      <h2 class="section-title">The Ask</h2>
+      <p class="section-subtitle">What matters most is that my compensation reflects the engineering role I'm already performing.</p>
+    </div>
+
+    <div class="proposal-section reveal-scale">
+      <div class="proposal-numbers">
+        <div class="proposal-current">$2,900/mo</div>
+        <div class="proposal-arrow">→</div>
+        <div class="proposal-target">
+          $<span id="salaryCounter">0</span>/mo
+          <small>(+21%)</small>
+        </div>
+      </div>
+
+      <div class="proposal-reasons">
+        <div class="reason">
+          <span class="check">✓</span>
+          <p><strong>Full A-Z ownership:</strong> Ticket design, DB schema, backend, frontend, APIs, ETL pipelines & documentation — every feature end-to-end</p>
+        </div>
+        <div class="reason">
+          <span class="check">✓</span>
+          <p><strong>200+ PRs confirmed by manager</strong> with end-to-end ownership (BE, FE, Data)</p>
+        </div>
+        <div class="reason">
+          <span class="check">✓</span>
+          <p><strong>API performance optimization:</strong> 16s → 100ms (query tuning, Redis caching, zero downtime)</p>
+        </div>
+        <div class="reason">
+          <span class="check">✓</span>
+          <p><strong>Shipsta integration:</strong> Led full-stack effort processing 200M+ records/week with ~70% processing time reduction</p>
+        </div>
+        <div class="reason">
+          <span class="check">✓</span>
+          <p><strong>Cross-team leadership</strong> — code reviewer, architecture advisor, knowledge sharer across all teams</p>
+        </div>
+        <div class="reason">
+          <span class="check">✓</span>
+          <p><strong>Open to phased approach</strong> — flexible on timing to reach $3,500 by end of 2026</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== FOOTER ====================== -->
+<footer>
+  <p>Built with <span class="heart">♥</span> — Hamza Sabri · Freightos Data · 2026</p>
+</footer>
+
+<!-- Leaflet.js -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- ====================== JAVASCRIPT ====================== -->
+<script>
+// ===== CURSOR GLOW =====
+const cursorGlow = document.getElementById('cursorGlow');
+let mouseX = 0, mouseY = 0, glowX = 0, glowY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+function animateGlow() {
+  glowX += (mouseX - glowX) * 0.08;
+  glowY += (mouseY - glowY) * 0.08;
+  cursorGlow.style.left = glowX + 'px';
+  cursorGlow.style.top = glowY + 'px';
+  requestAnimationFrame(animateGlow);
+}
+animateGlow();
+
+// ===== NAV SCROLL EFFECT =====
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ===== PARTICLES =====
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = 50;
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 1.5 + 0.5;
+    this.speedX = (Math.random() - 0.5) * 0.3;
+    this.speedY = (Math.random() - 0.5) * 0.3;
+    this.opacity = Math.random() * 0.3 + 0.1;
+    this.color = ['124,58,237', '6,182,212', '245,158,11'][Math.floor(Math.random() * 3)];
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+      this.reset();
+    }
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < PARTICLE_COUNT; i++) {
+  particles.push(new Particle());
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(124, 58, 237, ${0.03 * (1 - dist / 150)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ===== SCROLL REVEAL =====
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, observerOptions);
+
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .stagger-children').forEach(el => {
+  revealObserver.observe(el);
+});
+
+// ===== COUNTER ANIMATION =====
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target;
+      const target = parseInt(el.dataset.target);
+      const duration = 2000;
+      const start = performance.now();
+
+      function updateCounter(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutExpo
+        const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const value = Math.floor(eased * target);
+        el.textContent = value.toLocaleString();
+        if (progress < 1) {
+          requestAnimationFrame(updateCounter);
+        } else {
+          el.textContent = target.toLocaleString();
+        }
+      }
+      requestAnimationFrame(updateCounter);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.counter').forEach(el => {
+  counterObserver.observe(el);
+});
+
+// ===== BAR CHART ANIMATION =====
+const barObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const bars = entry.target.querySelectorAll('.bar-fill');
+      bars.forEach((bar, i) => {
+        setTimeout(() => {
+          bar.style.width = bar.dataset.width + '%';
+        }, i * 150);
+      });
+      barObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.bar-chart').forEach(el => {
+  barObserver.observe(el);
+});
+
+// ===== SMOOTH NAV SCROLLING =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+// ===== GSAP + SCROLLTRIGGER =====
+gsap.registerPlugin(ScrollTrigger);
+
+// --- Tech Grid: stagger + bounce ---
+gsap.fromTo('#techGrid .tech-item',
+  {
+    opacity: 0,
+    y: 80,
+    scale: 0.5,
+    rotateX: 40,
+  },
+  {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateX: 0,
+    duration: 0.8,
+    ease: 'back.out(1.7)',     // bounce overshoot
+    stagger: {
+      each: 0.1,
+      from: 'start',
+      grid: 'auto',
+    },
+    scrollTrigger: {
+      trigger: '#techGrid',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// After landing, activate icon bob animations
+ScrollTrigger.create({
+  trigger: '#techGrid',
+  start: 'top 80%',
+  onEnter: () => {
+    setTimeout(() => {
+      document.querySelectorAll('#techGrid .tech-item').forEach((item, i) => {
+        setTimeout(() => item.classList.add('animate-icons'), i * 100);
+      });
+    }, 1200);
+  },
+  once: true
+});
+
+// --- Stat Cards: pop-in with elastic ease ---
+gsap.fromTo('.stat-card',
+  { opacity: 0, scale: 0.4, y: 50 },
+  {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    duration: 0.7,
+    ease: 'elastic.out(1, 0.5)',
+    stagger: 0.12,
+    scrollTrigger: {
+      trigger: '.stats-grid',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// --- Feature Cards: stagger slide-up ---
+gsap.utils.toArray('.features-grid').forEach(grid => {
+  gsap.fromTo(grid.querySelectorAll('.feature-card'),
+    { opacity: 0, y: 60, rotateY: -8 },
+    {
+      opacity: 1,
+      y: 0,
+      rotateY: 0,
+      duration: 0.7,
+      ease: 'back.out(1.4)',
+      stagger: 0.15,
+      scrollTrigger: {
+        trigger: grid,
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+      }
+    }
+  );
+});
+
+// --- Quote Cards: identical to tech grid animation ---
+gsap.fromTo('#quotesGrid .quote-card',
+  {
+    opacity: 0,
+    y: 80,
+    scale: 0.5,
+    rotateX: 40,
+  },
+  {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateX: 0,
+    duration: 0.8,
+    ease: 'back.out(1.7)',
+    stagger: {
+      each: 0.1,
+      from: 'start',
+      grid: 'auto',
+    },
+    scrollTrigger: {
+      trigger: '#quotesGrid',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// Highlighted quotes glow pulse
+ScrollTrigger.create({
+  trigger: '#quotesGrid',
+  start: 'top 80%',
+  once: true,
+  onEnter: () => {
+    setTimeout(() => {
+      document.querySelectorAll('.quote-highlight').forEach((card, i) => {
+        gsap.fromTo(card,
+          { boxShadow: '0 0 0 0 rgba(124, 58, 237, 0)' },
+          { boxShadow: '0 0 25px 4px rgba(124, 58, 237, 0.2)', duration: 0.8, delay: i * 0.2, ease: 'power2.out',
+            onComplete: () => { gsap.to(card, { boxShadow: '0 4px 20px rgba(124, 58, 237, 0.1)', duration: 1 }); }
+          }
+        );
+      });
+    }, 1200);
+  },
+});
+
+// Life Journey timeline stagger
+gsap.fromTo('.life-node',
+  { opacity: 0, x: -40, scale: 0.9 },
+  {
+    opacity: 1, x: 0, scale: 1,
+    duration: 0.8,
+    ease: 'back.out(1.4)',
+    stagger: 0.25,
+    scrollTrigger: {
+      trigger: '.life-timeline',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// --- Ownership Card pillars stagger ---
+gsap.fromTo('.ownership-pillar',
+  { opacity: 0, y: 20, scale: 0.85 },
+  {
+    opacity: 1, y: 0, scale: 1,
+    duration: 0.5,
+    ease: 'back.out(1.6)',
+    stagger: 0.08,
+    scrollTrigger: {
+      trigger: '.ownership-card',
+      start: 'top 75%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// Ownership trust quote slide-in
+gsap.fromTo('.ownership-trust-quote',
+  { opacity: 0, x: -30 },
+  {
+    opacity: 1, x: 0,
+    duration: 0.8,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.ownership-trust-quote',
+      start: 'top 85%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// --- Meme Cards: dramatic scale + rotate ---
+gsap.utils.toArray('.meme-card').forEach(card => {
+  gsap.fromTo(card,
+    { opacity: 0, scale: 0.6, rotate: -3 },
+    {
+      opacity: 1,
+      scale: 1,
+      rotate: 0,
+      duration: 0.9,
+      ease: 'elastic.out(1, 0.6)',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      }
+    }
+  );
+});
+
+// --- Bar Chart: slide in from left ---
+gsap.fromTo('.bar-row',
+  { opacity: 0, x: -80 },
+  {
+    opacity: 1,
+    x: 0,
+    duration: 0.6,
+    ease: 'power3.out',
+    stagger: 0.12,
+    scrollTrigger: {
+      trigger: '.bar-chart',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// --- Timeline Items: stagger from left ---
+gsap.fromTo('.timeline-item',
+  { opacity: 0, x: -40 },
+  {
+    opacity: 1,
+    x: 0,
+    duration: 0.7,
+    ease: 'back.out(1.2)',
+    stagger: 0.2,
+    scrollTrigger: {
+      trigger: '.timeline',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// --- Proposal Section: grand entrance ---
+gsap.fromTo('.proposal-section',
+  { opacity: 0, y: 60, scale: 0.9 },
+  {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    duration: 1,
+    ease: 'back.out(1.5)',
+    scrollTrigger: {
+      trigger: '.proposal-section',
+      start: 'top 80%',
+      toggleActions: 'play none none none',
+    }
+  }
+);
+
+// --- Proposal Numbers: current appears, arrow, then target counts 0→2900→3500 ---
+ScrollTrigger.create({
+  trigger: '.proposal-section',
+  start: 'top 75%',
+  once: true,
+  onEnter: () => {
+    const counterEl = document.getElementById('salaryCounter');
+    const counter = { val: 0 };
+
+    // Step 1: current salary slides in
+    gsap.fromTo('.proposal-current', { opacity: 0, x: -30 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out' });
+    // Step 2: arrow pops in
+    gsap.fromTo('.proposal-arrow', { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: 0.5, delay: 0.3, ease: 'back.out(2)' });
+    // Step 3: target fades in, then counter starts
+    gsap.fromTo('.proposal-target', { opacity: 0, x: 30, scale: 0.8 }, {
+      opacity: 1, x: 0, scale: 1, duration: 0.8, delay: 0.5, ease: 'elastic.out(1, 0.5)',
+      onComplete: () => {
+        // Phase 1: fast count 0 → 2,900
+        gsap.to(counter, {
+          val: 2900,
+          duration: 1.5,
+          ease: 'power2.out',
+          onUpdate: () => { counterEl.textContent = Math.round(counter.val).toLocaleString(); },
+          onComplete: () => {
+            // Brief pause, then Phase 2: slow count 2,900 → 3,500
+            gsap.to(counter, {
+              val: 3500,
+              duration: 2.5,
+              delay: 0.5,
+              ease: 'power1.inOut',
+              onUpdate: () => {
+                counterEl.textContent = Math.round(counter.val).toLocaleString();
+                const progress = (counter.val - 2900) / 600;
+                if (progress > 0.05) {
+                  counterEl.style.background = `linear-gradient(135deg, rgba(52,211,153,${0.6+progress*0.4}), rgba(34,211,238,${0.4+progress*0.6}))`;
+                  counterEl.style.webkitBackgroundClip = 'text';
+                  counterEl.style.webkitTextFillColor = 'transparent';
+                }
+              },
+              onComplete: () => {
+                // Pulse the final number
+                gsap.fromTo(counterEl, { scale: 1 }, { scale: 1.2, duration: 0.3, yoyo: true, repeat: 1, ease: 'power2.inOut' });
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+});
+
+// --- Role Comparison: slide in from sides ---
+gsap.fromTo('.role-box.then',
+  { opacity: 0, x: -60 },
+  {
+    opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
+    scrollTrigger: { trigger: '.role-comparison', start: 'top 80%', toggleActions: 'play none none none' }
+  }
+);
+gsap.fromTo('.role-box.now',
+  { opacity: 0, x: 60 },
+  {
+    opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
+    scrollTrigger: { trigger: '.role-comparison', start: 'top 80%', toggleActions: 'play none none none' }
+  }
+);
+gsap.fromTo('.role-arrow',
+  { opacity: 0, scale: 0 },
+  {
+    opacity: 1, scale: 1, duration: 0.5, delay: 0.4, ease: 'back.out(3)',
+    scrollTrigger: { trigger: '.role-comparison', start: 'top 80%', toggleActions: 'play none none none' }
+  }
+);
+
+// --- Hero entrance (non-scroll, on load) ---
+const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+heroTl
+  .fromTo('.hero-badge', { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.6 })
+  .fromTo('.hero h1', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, '-=0.3')
+  .fromTo('.hero .subtitle', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6 }, '-=0.4')
+  .fromTo('.hero-cta', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+  .fromTo('.scroll-indicator', { opacity: 0 }, { opacity: 1, duration: 0.8 }, '-=0.2');
+
+// ===== LEAFLET MAP =====
+if (document.getElementById('regionMap') && typeof L !== 'undefined') {
+  const map = L.map('regionMap', {
+    center: [20, 30],
+    zoom: 2,
+    zoomControl: true,
+    scrollWheelZoom: false,
+    attributionControl: false
+  });
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png', {
+    maxZoom: 8,
+    minZoom: 2
+  }).addTo(map);
+
+  // Exact coordinates from Hamza's Confluence doc (Alternative Routes)
+  const regions = [
+    { name: 'Asia, Japan',         bounds: [[24, 130], [75, 190]],   color: '#7c3aed' },
+    { name: 'Middle East',         bounds: [[10, 34],  [34, 60]],    color: '#a78bfa' },
+    { name: 'Asia, Central',       bounds: [[25, 60],  [53, 90]],    color: '#06b6d4' },
+    { name: 'Asia, Southern',      bounds: [[0, 60],   [25, 90]],    color: '#22d3ee' },
+    { name: 'Asia, Greater China', bounds: [[0, 90],   [53, 130]],   color: '#0891b2' },
+    { name: 'Africa, Sub-Saharan', bounds: [[-35, -26],[10, 60]],    color: '#f59e0b' },
+    { name: 'Africa, Northern',    bounds: [[10, -26], [34, 34]],    color: '#fbbf24' },
+    { name: 'Europe, Eastern',     bounds: [[34, 22],  [50, 60]],    color: '#10b981' },
+    { name: 'Europe, Northern',    bounds: [[50, -34], [82, 55]],    color: '#34d399' },
+    { name: 'Europe, Southern',    bounds: [[34, -34], [50, 22]],    color: '#059669' },
+    { name: 'Oceania, Australia',  bounds: [[-50, 90], [0, 180]],    color: '#f97316' },
+    { name: 'Americas, US East',   bounds: [[25, -105],[42, -60]],   color: '#ef4444' },
+    { name: 'Americas, US West',   bounds: [[25, -130],[50, -105]],  color: '#f43f5e' },
+    { name: 'Americas, Canada East', bounds: [[42, -105],[82, -34]], color: '#ec4899' },
+    { name: 'Americas, Canada West', bounds: [[50, -190],[82, -105]], color: '#d946ef' },
+    { name: 'Americas, Central',   bounds: [[8, -117], [25, -55]],   color: '#eab308' },
+    { name: 'Americas, South East', bounds: [[-56, -70],[8, -26]],   color: '#84cc16' },
+    { name: 'Americas, South West', bounds: [[-56, -120],[8, -70]],  color: '#22c55e' }
+  ];
+
+  regions.forEach(r => {
+    const rect = L.rectangle(
+      [[r.bounds[0][0], r.bounds[0][1]], [r.bounds[1][0], r.bounds[1][1]]],
+      {
+        color: r.color,
+        weight: 1.5,
+        fillColor: r.color,
+        fillOpacity: 0.15,
+        className: 'region-rect'
+      }
+    ).addTo(map);
+
+    rect.on('mouseover', function(e) {
+      this.setStyle({ fillOpacity: 0.4, weight: 2.5 });
+    });
+    rect.on('mouseout', function(e) {
+      this.setStyle({ fillOpacity: 0.15, weight: 1.5 });
+    });
+
+    rect.bindTooltip(
+      '<div class="region-tooltip">' +
+        '<div class="tt-name">' + r.name + '</div>' +
+        '<div class="tt-coords">Lat: ' + r.bounds[0][0] + '° to ' + r.bounds[1][0] + '° | Lng: ' + r.bounds[0][1] + '° to ' + r.bounds[1][1] + '°</div>' +
+      '</div>',
+      { className: 'region-tooltip', sticky: true, direction: 'top', offset: [0, -10] }
+    );
+  });
+
+  // Animate map on scroll
+  ScrollTrigger.create({
+    trigger: '#regionMap',
+    start: 'top 80%',
+    once: true,
+    onEnter: () => {
+      gsap.fromTo('#regionMap', { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' });
+      setTimeout(() => map.invalidateSize(), 100);
+    }
+  });
+}
+
+// ===== TILT EFFECT ON CARDS (smooth mouse-following) =====
+document.querySelectorAll('.feature-card, .stat-card, .quote-card, .ownership-pillar').forEach(card => {
+  let tiltRAF = null;
+  let currentRotateX = 0, currentRotateY = 0;
+  let targetRotateX = 0, targetRotateY = 0;
+
+  function lerpTilt() {
+    currentRotateX += (targetRotateX - currentRotateX) * 0.15;
+    currentRotateY += (targetRotateY - currentRotateY) * 0.15;
+    card.style.transform = `perspective(800px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg) translateY(-4px) scale3d(1.02, 1.02, 1.02)`;
+    if (Math.abs(targetRotateX - currentRotateX) > 0.01 || Math.abs(targetRotateY - currentRotateY) > 0.01) {
+      tiltRAF = requestAnimationFrame(lerpTilt);
+    }
+  }
+
+  card.addEventListener('mouseenter', () => {
+    card.style.transition = 'none';
+  });
+
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    targetRotateX = (y - centerY) / centerY * -10;
+    targetRotateY = (x - centerX) / centerX * 10;
+    if (!tiltRAF) tiltRAF = requestAnimationFrame(lerpTilt);
+  });
+
+  card.addEventListener('mouseleave', () => {
+    targetRotateX = 0;
+    targetRotateY = 0;
+    if (tiltRAF) { cancelAnimationFrame(tiltRAF); tiltRAF = null; }
+    card.style.transition = 'transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    card.style.transform = 'perspective(800px) rotateX(0) rotateY(0) translateY(0) scale3d(1, 1, 1)';
+    currentRotateX = 0;
+    currentRotateY = 0;
+  });
+});
+
+// ===== DONUT CHART ANIMATION (staggered) =====
+const donutObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const items = entry.target.querySelectorAll('.donut-item');
+      items.forEach((item, i) => {
+        // Scale-in stagger for each donut
+        gsap.fromTo(item,
+          { opacity: 0, scale: 0.6, y: 30 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.5)', delay: i * 0.2 }
+        );
+        // Ring fill with stagger
+        const ring = item.querySelector('.donut-ring');
+        if (ring) {
+          const circ = parseInt(ring.dataset.circumference) || 377;
+          const target = parseInt(ring.dataset.target);
+          gsap.to(ring, {
+            strokeDashoffset: circ - target,
+            duration: 2,
+            ease: 'power3.out',
+            delay: 0.5 + i * 0.25
+          });
+        }
+      });
+      donutObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.donut-container').forEach(el => donutObserver.observe(el));
+</script>
+
+</body>
+</html>
